@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "skills": {
+    "better-auth-best-practices": {
+      "source": "better-auth/skills",
+      "sourceType": "github",
+      "computedHash": "a4c830509e85557b59339d8d93a4e243e9e59c686e7678854d39230e12c2a6dc"
+    },
+    "building-native-ui": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "342df93f481a0dba919f372d6c7b40d2b4bf5b51dd24363aea2e5d0bae27a6fa"
+    },
+    "discuss-in-french": {
+      "source": "sones3/skills",
+      "sourceType": "github",
+      "computedHash": "d2f4a3d37e54517ba3f534ab27a5a8a62a5d4a50878c0f7ea0ba9fdc9b3d1f97"
+    },
+    "expo-api-routes": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "015c6b849507fda73fcc32d2448f033aaaaa21f5229085342b8421727a90cafb"
+    },
+    "expo-cicd-workflows": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "700b20b575fcbe75ad238b41a0bd57938abe495e62dc53e05400712ab01ee7c0"
+    },
+    "expo-dev-client": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "234e2633b7fbcef2d479f8fe8ab20d53d08ed3e4beec7c965da4aff5b43affe7"
+    },
+    "expo-tailwind-setup": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "d39e806942fe880347f161056729b588a3cb0f1796270eebf52633fe11cfdce1"
+    },
+    "grill-me": {
+      "source": "sones3/skills",
+      "sourceType": "github",
+      "computedHash": "f343ef02aa0ada0f8b13a77b6db7fb6a11f88d8067128215585500ef4fd3b5e0"
+    },
+    "prd-to-issues": {
+      "source": "sones3/skills",
+      "sourceType": "github",
+      "computedHash": "d7d841becb200d8ae4322d6a81801025e3c57b6710f70b789b419c496ed4c59e"
+    },
+    "start-next-issue": {
+      "source": "sones3/skills",
+      "sourceType": "github",
+      "computedHash": "6fa2783f5d6f7b271767eec844edbabbb9e8227dcb6311d5dae711929ccc2004"
+    },
+    "ubiquitous-language": {
+      "source": "sones3/skills",
+      "sourceType": "github",
+      "computedHash": "f42ba99fc024fab5b6d0c422617ef0c1956859d273994e307bee2e34e934b8c0"
+    },
+    "ui-design-brain": {
+      "source": "carmahhawwari/ui-design-brain",
+      "sourceType": "github",
+      "computedHash": "2f879ee8afd07785c241b5fa31bcc96bb8efc2379cff1fff3167edd08ebe2790"
+    },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f98931159fa9c7fed043bcd18a891a46dcf89ababa38df13a4c5b7b30dc0ce07"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "3219a1944e404ffc14d1d9d6aef6dd2e3855b81387ee0a044ccbfe14d34c2357"
+    },
+    "vercel-react-native-skills": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "2e9088a7333666d8c2833b8ff58bd51b955501c42b4c7244f72b4cbf22dafcc4"
+    },
+    "write-a-prd": {
+      "source": "sones3/skills",
+      "sourceType": "github",
+      "computedHash": "4751d58906cd23d95ac2584e05a1e683af6965ecef4dacecd85ce3a73221bccb"
+    }
+  }
+}
