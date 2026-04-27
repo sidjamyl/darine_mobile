@@ -37,6 +37,11 @@ This project uses PostgreSQL with Drizzle ORM.
 bun run db:push
 ```
 
+Environment examples:
+
+- `apps/server/.env.example`
+- `apps/native/.env.example`
+
 Then, run the development server:
 
 ```bash
@@ -70,3 +75,9 @@ app/
 - `bun run db:generate`: Generate database client/types
 - `bun run db:migrate`: Run database migrations
 - `bun run db:studio`: Open database studio UI
+
+## Operations
+
+Production and CI guidance lives in:
+
+- `PRODUCTION_READINESS.md`

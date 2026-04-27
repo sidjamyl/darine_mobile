@@ -1,4 +1,5 @@
 import { clientProfile, commune, wilaya } from "@app/db/schema/profile";
+import { user } from "@app/db/schema/auth";
 import { TRPCError } from "@trpc/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
@@ -37,13 +38,25 @@ type ProfileInput = z.infer<typeof profileInputSchema>;
 
 export const profileRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
-    return ctx.db.query.clientProfile.findFirst({
+    const profile = await ctx.db.query.clientProfile.findFirst({
       where: eq(clientProfile.userId, ctx.user.id),
       with: {
         wilaya: true,
         commune: true,
       },
     });
+
+    return {
+      user: {
+        id: ctx.user.id,
+        name: ctx.user.name,
+        email: ctx.user.email,
+        phoneNumber: ctx.user.phoneNumber,
+        phoneNumberLocal: ctx.user.phoneNumberLocal,
+        role: ctx.user.role,
+      },
+      profile,
+    };
   }),
 
   upsert: protectedProcedure.input(profileInputSchema).mutation(async ({ ctx, input }) => {
@@ -59,20 +72,24 @@ export const profileRouter = router({
       longitude: input.longitude === undefined ? null : String(input.longitude),
     };
 
-    await ctx.db
-      .insert(clientProfile)
-      .values(profileValues)
-      .onConflictDoUpdate({
-        target: clientProfile.userId,
-        set: {
-          fullName: profileValues.fullName,
-          wilayaId: profileValues.wilayaId,
-          communeId: profileValues.communeId,
-          streetAddress: profileValues.streetAddress,
-          latitude: profileValues.latitude,
-          longitude: profileValues.longitude,
-        },
-      });
+    await ctx.db.transaction(async (tx) => {
+      await tx.update(user).set({ name: input.fullName }).where(eq(user.id, ctx.user.id));
+
+      await tx
+        .insert(clientProfile)
+        .values(profileValues)
+        .onConflictDoUpdate({
+          target: clientProfile.userId,
+          set: {
+            fullName: profileValues.fullName,
+            wilayaId: profileValues.wilayaId,
+            communeId: profileValues.communeId,
+            streetAddress: profileValues.streetAddress,
+            latitude: profileValues.latitude,
+            longitude: profileValues.longitude,
+          },
+        });
+    });
 
     return { success: true };
   }),

@@ -9,7 +9,10 @@ import { useAppTheme } from "@/contexts/app-theme-context";
 const StyledIonicons = withUniwind(Ionicons);
 
 export function ThemeToggle() {
-  const { toggleTheme, isLight } = useAppTheme();
+  const { toggleTheme, themeMode } = useAppTheme();
+  const iconName =
+    (themeMode === "system" ? "contrast-outline" : themeMode === "light" ? "sunny" : "moon") as keyof typeof Ionicons.glyphMap;
+  const iconKey = `${themeMode}-${iconName}`;
 
   return (
     <Pressable
@@ -21,15 +24,9 @@ export function ThemeToggle() {
       }}
       className="px-2.5"
     >
-      {isLight ? (
-        <Animated.View key="moon" entering={ZoomIn} exiting={FadeOut}>
-          <StyledIonicons name="moon" size={20} className="text-foreground" />
-        </Animated.View>
-      ) : (
-        <Animated.View key="sun" entering={ZoomIn} exiting={FadeOut}>
-          <StyledIonicons name="sunny" size={20} className="text-foreground" />
-        </Animated.View>
-      )}
+      <Animated.View key={iconKey} entering={ZoomIn} exiting={FadeOut}>
+        <StyledIonicons name={iconName} size={20} className="text-foreground" />
+      </Animated.View>
     </Pressable>
   );
 }

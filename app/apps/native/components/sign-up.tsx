@@ -1,192 +1,256 @@
-import { useForm } from "@tanstack/react-form";
-import {
-  Button,
-  FieldError,
-  Input,
-  Label,
-  Spinner,
-  Surface,
-  TextField,
-  useToast,
-} from "heroui-native";
-import { useRef } from "react";
-import { Text, TextInput, View } from "react-native";
-import z from "zod";
+import { Ionicons } from "@expo/vector-icons";
+import { useMutation } from "@tanstack/react-query";
+import { Button, Card, FieldError, Input, Label, Spinner, TextField, useToast } from "heroui-native";
+import { useRef, useState } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
 
+import { ClientAddressFields, type ClientAddressValue } from "@/components/client-address-fields";
+import { useAppTheme } from "@/contexts/app-theme-context";
 import { authClient } from "@/lib/auth-client";
-import { queryClient } from "@/utils/trpc";
+import { getReadableErrorMessage, normalizeAlgerianPhone } from "@/lib/client-auth";
+import { joumlaColors } from "@/lib/app-shell";
+import { queryClient, trpc } from "@/utils/trpc";
 
-const signUpSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").min(2, "Name must be at least 2 characters"),
-  email: z.string().trim().min(1, "Email is required").email("Enter a valid email address"),
-  password: z.string().min(1, "Password is required").min(8, "Use at least 8 characters"),
-});
+const copy = {
+  fr: {
+    title: "Creer un compte client",
+    body: "Renseignez vos informations pour commander en gros chez Joumla.",
+    fullName: "Nom complet",
+    fullNamePlaceholder: "Nom et prenom",
+    phone: "Telephone",
+    phonePlaceholder: "0550 00 00 00",
+    password: "Mot de passe",
+    confirmPassword: "Confirmer le mot de passe",
+    submit: "Creer le compte",
+    invalidName: "Entrez votre nom complet.",
+    invalidPhone: "Entrez un numero algerien valide.",
+    invalidPassword: "Le mot de passe doit contenir au moins 6 caracteres.",
+    passwordMismatch: "Les mots de passe ne correspondent pas.",
+    missingWilaya: "Choisissez une wilaya.",
+    missingCommune: "Choisissez une commune.",
+    missingAddress: "Entrez une adresse.",
+    success: "Compte cree et connecte.",
+    failed: "Creation du compte impossible.",
+  },
+  ar: {
+    title: "انشاء حساب عميل",
+    body: "ادخل معلوماتك للطلب بالجملة من Joumla.",
+    fullName: "الاسم الكامل",
+    fullNamePlaceholder: "الاسم واللقب",
+    phone: "رقم الهاتف",
+    phonePlaceholder: "0550 00 00 00",
+    password: "كلمة المرور",
+    confirmPassword: "تاكيد كلمة المرور",
+    submit: "انشاء الحساب",
+    invalidName: "ادخل الاسم الكامل.",
+    invalidPhone: "ادخل رقم هاتف جزائري صحيح.",
+    invalidPassword: "كلمة المرور يجب ان تحتوي على 6 احرف على الاقل.",
+    passwordMismatch: "كلمتا المرور غير متطابقتين.",
+    missingWilaya: "اختر الولاية.",
+    missingCommune: "اختر البلدية.",
+    missingAddress: "ادخل العنوان.",
+    success: "تم انشاء الحساب وتسجيل الدخول.",
+    failed: "تعذر انشاء الحساب.",
+  },
+};
 
-function getErrorMessage(error: unknown): string | null {
-  if (!error) return null;
+type SignUpErrors = Partial<Record<"fullName" | "phoneNumber" | "password" | "confirmPassword" | keyof ClientAddressValue, string>>;
 
-  if (typeof error === "string") {
-    return error;
-  }
-
-  if (Array.isArray(error)) {
-    for (const issue of error) {
-      const message = getErrorMessage(issue);
-      if (message) {
-        return message;
-      }
-    }
-    return null;
-  }
-
-  if (typeof error === "object" && error !== null) {
-    const maybeError = error as { message?: unknown };
-    if (typeof maybeError.message === "string") {
-      return maybeError.message;
-    }
-  }
-
-  return null;
-}
+const emptyAddress: ClientAddressValue = {
+  wilayaId: "",
+  communeId: "",
+  streetAddress: "",
+  latitude: null,
+  longitude: null,
+};
 
 export function SignUp() {
-  const emailInputRef = useRef<TextInput>(null);
+  const phoneInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
+  const confirmPasswordInputRef = useRef<TextInput>(null);
   const { toast } = useToast();
+  const { language, isDark, isRtl } = useAppTheme();
+  const labels = copy[language];
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [address, setAddress] = useState<ClientAddressValue>(emptyAddress);
+  const [errors, setErrors] = useState<SignUpErrors>({});
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-    validators: {
-      onSubmit: signUpSchema,
-    },
-    onSubmit: async ({ value, formApi }) => {
-      await authClient.signUp.email(
-        {
-          name: value.name.trim(),
-          email: value.email.trim(),
-          password: value.password,
-        },
-        {
-          onError(error) {
-            toast.show({
-              variant: "danger",
-              label: error.error?.message || "Failed to sign up",
-            });
-          },
-          onSuccess() {
-            formApi.reset();
-            toast.show({
-              variant: "success",
-              label: "Account created successfully",
-            });
-            queryClient.refetchQueries();
-          },
-        },
-      );
-    },
-  });
+  const registerClient = useMutation(
+    trpc.auth.registerClient.mutationOptions({
+      onError(error) {
+        const message = getReadableErrorMessage(error, labels.failed);
+        setFormError(message);
+        toast.show({ variant: "danger", label: message });
+      },
+      async onSuccess(_, variables) {
+        const normalizedPhone = normalizeAlgerianPhone(variables.phoneNumber);
+        if (!normalizedPhone) return;
+
+        const result = await authClient.signIn.phoneNumber({
+          phoneNumber: normalizedPhone.international,
+          password: variables.password,
+          rememberMe: true,
+        });
+
+        if (result.error) {
+          const message = getReadableErrorMessage(result.error, labels.failed);
+          setFormError(message);
+          toast.show({ variant: "danger", label: message });
+          return;
+        }
+
+        setFullName("");
+        setPhoneNumber("");
+        setPassword("");
+        setConfirmPassword("");
+        setAddress(emptyAddress);
+        setErrors({});
+        toast.show({ variant: "success", label: labels.success });
+        await queryClient.invalidateQueries();
+      },
+    }),
+  );
+
+  function validate() {
+    const nextErrors: SignUpErrors = {};
+    const normalizedPhone = normalizeAlgerianPhone(phoneNumber);
+
+    if (fullName.trim().length < 2) nextErrors.fullName = labels.invalidName;
+    if (!normalizedPhone) nextErrors.phoneNumber = labels.invalidPhone;
+    if (password.length < 6) nextErrors.password = labels.invalidPassword;
+    if (confirmPassword !== password) nextErrors.confirmPassword = labels.passwordMismatch;
+    if (!address.wilayaId) nextErrors.wilayaId = labels.missingWilaya;
+    if (!address.communeId) nextErrors.communeId = labels.missingCommune;
+    if (!address.streetAddress.trim()) nextErrors.streetAddress = labels.missingAddress;
+
+    setErrors(nextErrors);
+    return { errors: nextErrors, normalizedPhone };
+  }
+
+  function submit() {
+    const result = validate();
+
+    if (Object.keys(result.errors).length > 0 || !result.normalizedPhone) {
+      return;
+    }
+
+    setFormError(null);
+    registerClient.mutate({
+      fullName: fullName.trim(),
+      phoneNumber: result.normalizedPhone.international,
+      password,
+      confirmPassword,
+      wilayaId: address.wilayaId,
+      communeId: address.communeId,
+      streetAddress: address.streetAddress.trim(),
+      latitude: address.latitude ?? undefined,
+      longitude: address.longitude ?? undefined,
+    });
+  }
 
   return (
-    <Surface variant="secondary" className="p-4 rounded-lg">
-      <Text className="text-foreground font-medium mb-4">Create Account</Text>
+    <Card
+      style={{
+        backgroundColor: isDark ? joumlaColors.darkCard : "#FFFFFF",
+        borderRadius: 28,
+        borderWidth: 1,
+        borderColor: isDark ? "#27334A" : joumlaColors.line,
+        padding: 20,
+      }}
+    >
+      <View style={{ gap: 16 }}>
+        <View style={{ gap: 4, alignItems: isRtl ? "flex-end" : "flex-start" }}>
+          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 24, fontWeight: "800" }}>
+            {labels.title}
+          </Text>
+          <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, textAlign: isRtl ? "right" : "left" }}>
+            {labels.body}
+          </Text>
+        </View>
 
-      <form.Subscribe
-        selector={(state) => ({
-          isSubmitting: state.isSubmitting,
-          validationError: getErrorMessage(state.errorMap.onSubmit),
-        })}
-      >
-        {({ isSubmitting, validationError }) => {
-          const formError = validationError;
+        <FieldError isInvalid={!!formError}>{formError}</FieldError>
 
-          return (
-            <>
-              <FieldError isInvalid={!!formError} className="mb-3">
-                {formError}
-              </FieldError>
+        <TextField isRequired isInvalid={!!errors.fullName}>
+          <Label>{labels.fullName}</Label>
+          <Input
+            value={fullName}
+            onChangeText={setFullName}
+            placeholder={labels.fullNamePlaceholder}
+            autoComplete="name"
+            textContentType="name"
+            returnKeyType="next"
+            blurOnSubmit={false}
+            onSubmitEditing={() => phoneInputRef.current?.focus()}
+          />
+          <FieldError>{errors.fullName}</FieldError>
+        </TextField>
 
-              <View className="gap-3">
-                <form.Field name="name">
-                  {(field) => (
-                    <TextField>
-                      <Label>Name</Label>
-                      <Input
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChangeText={field.handleChange}
-                        placeholder="John Doe"
-                        autoComplete="name"
-                        textContentType="name"
-                        returnKeyType="next"
-                        blurOnSubmit={false}
-                        onSubmitEditing={() => {
-                          emailInputRef.current?.focus();
-                        }}
-                      />
-                    </TextField>
-                  )}
-                </form.Field>
+        <TextField isRequired isInvalid={!!errors.phoneNumber}>
+          <Label>{labels.phone}</Label>
+          <Input
+            ref={phoneInputRef}
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            placeholder={labels.phonePlaceholder}
+            keyboardType="phone-pad"
+            textContentType="telephoneNumber"
+            autoComplete="tel"
+            returnKeyType="next"
+            blurOnSubmit={false}
+            onSubmitEditing={() => passwordInputRef.current?.focus()}
+          />
+          <FieldError>{errors.phoneNumber}</FieldError>
+        </TextField>
 
-                <form.Field name="email">
-                  {(field) => (
-                    <TextField>
-                      <Label>Email</Label>
-                      <Input
-                        ref={emailInputRef}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChangeText={field.handleChange}
-                        placeholder="email@example.com"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        autoComplete="email"
-                        textContentType="emailAddress"
-                        returnKeyType="next"
-                        blurOnSubmit={false}
-                        onSubmitEditing={() => {
-                          passwordInputRef.current?.focus();
-                        }}
-                      />
-                    </TextField>
-                  )}
-                </form.Field>
+        <TextField isRequired isInvalid={!!errors.password}>
+          <Label>{labels.password}</Label>
+          <View style={{ width: "100%", flexDirection: "row", alignItems: "center" }}>
+            <Input
+              ref={passwordInputRef}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="******"
+              secureTextEntry={!isPasswordVisible}
+              autoComplete="new-password"
+              textContentType="newPassword"
+              returnKeyType="next"
+              blurOnSubmit={false}
+              onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
+              style={{ flex: 1, paddingRight: 44 }}
+            />
+            <Pressable onPress={() => setIsPasswordVisible((current) => !current)} style={{ position: "absolute", right: 14 }}>
+              <Ionicons name={isPasswordVisible ? "eye-off-outline" : "eye-outline"} size={18} color={joumlaColors.slate} />
+            </Pressable>
+          </View>
+          <FieldError>{errors.password}</FieldError>
+        </TextField>
 
-                <form.Field name="password">
-                  {(field) => (
-                    <TextField>
-                      <Label>Password</Label>
-                      <Input
-                        ref={passwordInputRef}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChangeText={field.handleChange}
-                        placeholder="••••••••"
-                        secureTextEntry
-                        autoComplete="new-password"
-                        textContentType="newPassword"
-                        returnKeyType="go"
-                        onSubmitEditing={form.handleSubmit}
-                      />
-                    </TextField>
-                  )}
-                </form.Field>
+        <TextField isRequired isInvalid={!!errors.confirmPassword}>
+          <Label>{labels.confirmPassword}</Label>
+          <Input
+            ref={confirmPasswordInputRef}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            placeholder="******"
+            secureTextEntry={!isPasswordVisible}
+            autoComplete="new-password"
+            textContentType="newPassword"
+            returnKeyType="next"
+          />
+          <FieldError>{errors.confirmPassword}</FieldError>
+        </TextField>
 
-                <Button onPress={form.handleSubmit} isDisabled={isSubmitting} className="mt-1">
-                  {isSubmitting ? (
-                    <Spinner size="sm" color="default" />
-                  ) : (
-                    <Button.Label>Create Account</Button.Label>
-                  )}
-                </Button>
-              </View>
-            </>
-          );
-        }}
-      </form.Subscribe>
-    </Surface>
+        <ClientAddressFields value={address} onChange={setAddress} errors={errors} />
+
+        <Button onPress={submit} isDisabled={registerClient.isPending}>
+          {registerClient.isPending ? <Spinner size="sm" color="default" /> : <Button.Label>{labels.submit}</Button.Label>}
+        </Button>
+      </View>
+    </Card>
   );
 }

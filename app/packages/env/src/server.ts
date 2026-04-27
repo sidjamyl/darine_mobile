@@ -12,6 +12,8 @@ export const env = createEnv({
     CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
     CLOUDINARY_API_KEY: z.string().min(1).optional(),
     CLOUDINARY_API_SECRET: z.string().min(1).optional(),
+    RESEND_API_KEY: z.string().min(1).optional(),
+    RESEND_FROM_EMAIL: z.string().min(1).optional(),
     SEED_OWNER_EMAIL: z.email().optional(),
     SEED_OWNER_PASSWORD: z.string().min(6).optional(),
     SEED_OWNER_NAME: z.string().min(1).optional(),
