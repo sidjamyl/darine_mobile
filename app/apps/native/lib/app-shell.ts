@@ -21,6 +21,9 @@ export type TranslationKey =
   | "search"
   | "cart"
   | "favorites"
+  | "brands"
+  | "categories"
+  | "productDetail"
   | "profile"
   | "orders"
   | "language"
@@ -60,6 +63,9 @@ const translations: Record<AppLanguage, Record<TranslationKey, string>> = {
     search: "Recherche",
     cart: "Panier",
     favorites: "Favoris",
+    brands: "Marques",
+    categories: "Categories",
+    productDetail: "Detail produit",
     profile: "Profil",
     orders: "Commandes",
     language: "Langue",
@@ -98,6 +104,9 @@ const translations: Record<AppLanguage, Record<TranslationKey, string>> = {
     search: "البحث",
     cart: "السلة",
     favorites: "المفضلة",
+    brands: "العلامات",
+    categories: "الاصناف",
+    productDetail: "تفاصيل المنتج",
     profile: "الملف الشخصي",
     orders: "الطلبات",
     language: "اللغة",

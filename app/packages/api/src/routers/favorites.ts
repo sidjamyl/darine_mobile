@@ -4,6 +4,7 @@ import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { protectedProcedure, router } from "../index";
+import { loadVisibleCatalogProductsByIds } from "./catalog-service";
 
 const favoriteProductInputSchema = z.object({
   productId: z.string().trim().min(1),
@@ -17,6 +18,19 @@ export const favoritesRouter = router({
     });
 
     return favorites.map((favorite) => favorite.productId);
+  }),
+
+  listProducts: protectedProcedure.query(async ({ ctx }) => {
+    const favorites = await ctx.db.query.favoriteProduct.findMany({
+      where: eq(favoriteProduct.userId, ctx.user.id),
+      orderBy: (favoritesTable, { desc: descending }) => [descending(favoritesTable.createdAt)],
+    });
+
+    return loadVisibleCatalogProductsByIds(
+      ctx,
+      favorites.map((favorite) => favorite.productId),
+      ctx.user.id,
+    );
   }),
 
   add: protectedProcedure.input(favoriteProductInputSchema).mutation(async ({ ctx, input }) => {

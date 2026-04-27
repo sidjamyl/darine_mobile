@@ -47,6 +47,27 @@ function DrawerLayout() {
         }}
       />
       <Drawer.Screen
+        name="brands"
+        options={{
+          title: t("brands"),
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+      <Drawer.Screen
+        name="categories"
+        options={{
+          title: t("categories"),
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+      <Drawer.Screen
+        name="product/[productId]"
+        options={{
+          title: t("productDetail"),
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+      <Drawer.Screen
         name="language"
         options={{
           title: t("language"),

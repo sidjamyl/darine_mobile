@@ -1,6 +1,7 @@
 import type { AppRouter } from "@app/api/routers/index";
 import { env } from "@app/env/native";
 import { QueryClient } from "@tanstack/react-query";
+import type { inferRouterOutputs } from "@trpc/server";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { Platform } from "react-native";
@@ -39,3 +40,5 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
   client: trpcClient,
   queryClient,
 });
+
+export type RouterOutputs = inferRouterOutputs<AppRouter>;
