@@ -6,5 +6,6 @@
     "sourceMap": true,
     "outDir": "dist",
     "composite": true
-  }
+  },
+  "include": ["drizzle.config.ts", "src/**/*.ts", "src/**/*.json"]
 }

@@ -9,7 +9,9 @@
       "default": "./src/*.ts"
     }
   },
-  "scripts": {},
+  "scripts": {
+    "seed:owner": "bun run src/seed-owner.ts"
+  },
   "dependencies": {
     "@app/db": "workspace:*",
     "@app/env": "workspace:*",

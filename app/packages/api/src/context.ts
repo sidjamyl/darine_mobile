@@ -1,4 +1,5 @@
 import { auth } from "@app/auth";
+import { db } from "@app/db";
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import { fromNodeHeaders } from "better-auth/node";
 
@@ -7,7 +8,8 @@ export async function createContext(opts: CreateExpressContextOptions) {
     headers: fromNodeHeaders(opts.req.headers),
   });
   return {
-    auth: null,
+    auth,
+    db,
     session,
   };
 }

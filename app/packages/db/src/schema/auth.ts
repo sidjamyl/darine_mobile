@@ -1,11 +1,19 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+
+export const userRole = pgEnum("user_role", ["client", "admin", "owner"]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
+  phoneNumber: text("phone_number").unique(),
+  phoneNumberLocal: text("phone_number_local").unique(),
+  phoneNumberVerified: boolean("phone_number_verified").default(false).notNull(),
+  role: userRole("role").default("client").notNull(),
+  isDisabled: boolean("is_disabled").default(false).notNull(),
+  isSeedOwner: boolean("is_seed_owner").default(false).notNull(),
   image: text("image"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
