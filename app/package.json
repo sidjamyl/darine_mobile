@@ -22,6 +22,7 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "check-types": "turbo check-types",
+    "dev:admin-web": "turbo -F admin-web dev",
     "dev:native": "turbo -F native dev",
     "dev:server": "turbo -F server dev",
     "db:push": "turbo -F @app/db db:push",

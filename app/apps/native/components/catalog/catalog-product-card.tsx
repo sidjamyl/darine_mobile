@@ -9,6 +9,7 @@ import { Pressable, Text, View, type StyleProp, type ViewStyle } from "react-nat
 import { getLocalizedName, formatDa } from "@/components/catalog/catalog-format";
 import { JoumlaSymbol } from "@/components/joumla-symbol";
 import { useAppTheme } from "@/contexts/app-theme-context";
+import { useCart } from "@/contexts/cart-context";
 import { authClient } from "@/lib/auth-client";
 import { joumlaColors } from "@/lib/app-shell";
 import { queryClient, trpc } from "@/utils/trpc";
@@ -41,7 +42,6 @@ type CatalogProductCardProps = {
 const copy = {
   fr: {
     addToCart: "Ajouter au panier",
-    cartQueued: "Produit selectionne. Le panier sera finalise dans l'etape checkout.",
     favoriteAdded: "Produit ajoute aux favoris.",
     favoriteRemoved: "Produit retire des favoris.",
     favoriteFailed: "Impossible de mettre a jour les favoris.",
@@ -53,7 +53,6 @@ const copy = {
   },
   ar: {
     addToCart: "اضافة الى السلة",
-    cartQueued: "تم اختيار المنتج. سيتم اكمال السلة في مرحلة الدفع.",
     favoriteAdded: "تمت اضافة المنتج الى المفضلة.",
     favoriteRemoved: "تم حذف المنتج من المفضلة.",
     favoriteFailed: "تعذر تحديث المفضلة.",
@@ -69,6 +68,7 @@ export function CatalogProductCard({ product, style }: CatalogProductCardProps) 
   const { language, isDark, isRtl } = useAppTheme();
   const labels = copy[language];
   const { toast } = useToast();
+  const cart = useCart();
   const { data: session } = authClient.useSession();
   const [isFavorite, setIsFavorite] = useState(product.isFavorite ?? false);
   const displayLotPrice = product.discountLotPrice || product.lotPrice;
@@ -112,7 +112,7 @@ export function CatalogProductCard({ product, style }: CatalogProductCardProps) 
       return;
     }
 
-    toast.show({ variant: "success", label: labels.cartQueued });
+    cart.requestAdd(product);
   }
 
   return (

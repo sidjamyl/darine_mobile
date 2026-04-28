@@ -1,0 +1,495 @@
+:root {
+  --joumla-navy: #0a1b46;
+  --joumla-pink: #e74888;
+  --joumla-cream: #f6f4f8;
+  --joumla-line: #e6e8ec;
+  --joumla-slate: #667085;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--joumla-cream);
+  color: var(--joumla-navy);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.auth-page,
+.state-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+
+.auth-card,
+.state-card {
+  width: min(100%, 440px);
+  border: 1px solid var(--joumla-line);
+  border-radius: 28px;
+}
+
+.auth-card-body,
+.state-card-body {
+  display: grid;
+  gap: 18px;
+  padding: 28px;
+}
+
+.auth-card h1,
+.state-card h1,
+.topbar h1,
+.module-hero h2 {
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--joumla-pink);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.muted,
+.module-hero p,
+.module-card p {
+  color: var(--joumla-slate);
+  line-height: 1.6;
+}
+
+.form-error {
+  margin: 0;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: var(--joumla-navy);
+  color: white;
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-block span {
+  display: block;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: white;
+  color: var(--joumla-pink);
+  font-weight: 950;
+}
+
+.nav-list {
+  display: grid;
+  gap: 6px;
+}
+
+.nav-link {
+  padding: 12px 14px;
+  border-radius: 14px;
+  color: #e2e8f0;
+  font-weight: 750;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+}
+
+.workspace {
+  min-width: 0;
+  padding: 28px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 0 28px;
+}
+
+.topbar-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--joumla-slate);
+  font-weight: 800;
+}
+
+.module-page {
+  display: grid;
+  gap: 20px;
+}
+
+.module-hero {
+  padding: 32px;
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--joumla-line);
+  border-radius: 32px;
+  background: white;
+}
+
+.module-hero h2 {
+  font-size: clamp(32px, 5vw, 56px);
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.module-card {
+  border: 1px solid var(--joumla-line);
+  border-radius: 24px;
+  background: white;
+}
+
+.module-card-body {
+  padding: 20px;
+}
+
+.module-card h3 {
+  margin: 0 0 8px;
+}
+
+.admin-section {
+  border: 1px solid var(--joumla-line);
+  border-radius: 28px;
+  margin-top: 18px;
+  background: white;
+}
+
+.admin-section-header,
+.admin-section-body {
+  padding: 20px;
+}
+
+.admin-section h2,
+.admin-section h3 {
+  margin: 0;
+}
+
+.admin-section-header p {
+  margin: 6px 0 0;
+}
+
+.admin-section-body,
+.detail-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.form-grid,
+.switch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin-field,
+.native-select-label {
+  display: grid;
+  gap: 7px;
+  color: var(--joumla-navy);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.admin-field input,
+.admin-field textarea,
+.native-select-label select {
+  width: 100%;
+  border: 1px solid var(--joumla-line);
+  border-radius: 14px;
+  background: white;
+  color: var(--joumla-navy);
+  padding: 11px 12px;
+  outline: none;
+}
+
+.admin-field input:focus,
+.admin-field textarea:focus,
+.native-select-label select:focus {
+  border-color: var(--joumla-pink);
+  box-shadow: 0 0 0 3px rgba(231, 72, 136, 0.14);
+}
+
+.admin-button {
+  width: fit-content;
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-button.solid {
+  background: var(--joumla-navy);
+  color: white;
+}
+
+.admin-button.soft {
+  background: #edf1ff;
+  color: var(--joumla-navy);
+}
+
+.admin-button.danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.admin-button.small {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.admin-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.admin-chip {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #edf1ff;
+  color: var(--joumla-navy);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.chip-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.chip-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.chip-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.admin-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 850;
+  color: var(--joumla-navy);
+}
+
+.admin-switch input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--joumla-pink);
+}
+
+.admin-tabs {
+  display: grid;
+  gap: 14px;
+}
+
+.tab-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.tab-button {
+  border: 1px solid var(--joumla-line);
+  border-radius: 999px;
+  background: white;
+  color: var(--joumla-slate);
+  padding: 10px 14px;
+  font-weight: 900;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab-button.active {
+  border-color: var(--joumla-navy);
+  background: var(--joumla-navy);
+  color: white;
+}
+
+.split-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.2fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.admin-table {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-table.two-cols {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--joumla-line);
+  border-radius: 18px;
+  background: #fff;
+  text-align: left;
+}
+
+.button-row {
+  cursor: pointer;
+}
+
+.button-row.active,
+.button-row:hover {
+  border-color: var(--joumla-pink);
+}
+
+.admin-row p {
+  margin: 4px 0 0;
+}
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.asset-field {
+  display: grid;
+  gap: 10px;
+}
+
+.file-button {
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--joumla-pink);
+  background: #f9d7e6;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.file-button input {
+  display: none;
+}
+
+.small-text {
+  margin: 0;
+  font-size: 13px;
+}
+
+.empty-row {
+  margin: 0;
+}
+
+.detail-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--joumla-cream);
+}
+
+.detail-card h3 {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: relative;
+    height: auto;
+  }
+
+  .nav-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topbar,
+  .topbar-account {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .split-grid,
+  .form-grid,
+  .switch-grid,
+  .admin-table.two-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

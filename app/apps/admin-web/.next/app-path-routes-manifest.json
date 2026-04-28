@@ -1,0 +1,13 @@
+{
+  "/(admin)/announcements/page": "/announcements",
+  "/(admin)/delivery-notes/page": "/delivery-notes",
+  "/(admin)/orders/page": "/orders",
+  "/(admin)/page": "/",
+  "/(admin)/products/page": "/products",
+  "/(admin)/sections/page": "/sections",
+  "/(admin)/settings/page": "/settings",
+  "/(admin)/stock/page": "/stock",
+  "/(admin)/users/page": "/users",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found"
+}

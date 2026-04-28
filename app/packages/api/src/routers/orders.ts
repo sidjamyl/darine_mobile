@@ -1,6 +1,6 @@
 import { adminAuditLog, customerOrder, orderLine, orderNumberCounter } from "@app/db/schema/order";
 import { TRPCError } from "@trpc/server";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import type { Context } from "../context";
@@ -45,6 +45,72 @@ async function allocateOrderNumber(db: Context["db"], now: Date) {
 }
 
 export const ordersRouter = router({
+  clientList: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db.query.customerOrder.findMany({
+      where: eq(customerOrder.userId, ctx.user.id),
+      orderBy: (ordersTable, { desc: descending }) => [descending(ordersTable.createdAt)],
+      with: {
+        lines: true,
+        deliveryNote: true,
+      },
+    });
+  }),
+
+  clientDetail: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.string().trim().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const orderRecord = await ctx.db.query.customerOrder.findFirst({
+        where: and(eq(customerOrder.id, input.orderId), eq(customerOrder.userId, ctx.user.id)),
+        with: {
+          lines: true,
+          deliveryNote: true,
+        },
+      });
+
+      if (!orderRecord) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Order not found" });
+      }
+
+      return orderRecord;
+    }),
+
+  clientCancel: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.string().trim().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const orderRecord = await ctx.db.query.customerOrder.findFirst({
+        where: and(eq(customerOrder.id, input.orderId), eq(customerOrder.userId, ctx.user.id)),
+      });
+
+      if (!orderRecord) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Order not found" });
+      }
+
+      if (orderRecord.status === "processing" || orderRecord.status === "processed" || orderRecord.status === "cancelled") {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "This order can no longer be cancelled by the client" });
+      }
+
+      await ctx.db
+        .update(customerOrder)
+        .set({
+          status: "cancelled",
+          updatedAt: new Date(),
+        })
+        .where(and(eq(customerOrder.id, input.orderId), eq(customerOrder.userId, ctx.user.id)));
+
+      return {
+        orderId: input.orderId,
+        status: "cancelled" as const,
+      };
+    }),
+
   adminList: adminProcedure
     .input(
       z
@@ -175,7 +241,7 @@ export const ordersRouter = router({
 
     const createdOrder = await ctx.db.transaction(async (tx) => {
       const orderId = createId("order");
-      const numbering = await allocateOrderNumber(tx as Context["db"], now);
+      const numbering = await allocateOrderNumber(tx as unknown as Context["db"], now);
 
       await tx.insert(customerOrder).values({
         id: orderId,

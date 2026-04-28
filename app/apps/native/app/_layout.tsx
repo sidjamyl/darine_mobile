@@ -6,8 +6,11 @@ import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import { AppThemeProvider } from "@/contexts/app-theme-context";
+import { CartProvider } from "@/contexts/cart-context";
+import { PushNotificationRouter } from "@/components/push-notification-router";
 import { queryClient } from "@/utils/trpc";
 
 export const unstable_settings = {
@@ -31,8 +34,13 @@ export default function Layout() {
           <SafeAreaProvider>
             <AppThemeProvider>
               <HeroUINativeProvider>
-                <StatusBar style="auto" />
-                <StackLayout />
+                <BottomSheetModalProvider>
+                  <CartProvider>
+                    <StatusBar style="auto" />
+                    <PushNotificationRouter />
+                    <StackLayout />
+                  </CartProvider>
+                </BottomSheetModalProvider>
               </HeroUINativeProvider>
             </AppThemeProvider>
           </SafeAreaProvider>

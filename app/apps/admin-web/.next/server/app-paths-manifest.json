@@ -1,0 +1,13 @@
+{
+  "/(admin)/announcements/page": "app/(admin)/announcements/page.js",
+  "/(admin)/delivery-notes/page": "app/(admin)/delivery-notes/page.js",
+  "/(admin)/orders/page": "app/(admin)/orders/page.js",
+  "/(admin)/page": "app/(admin)/page.js",
+  "/(admin)/products/page": "app/(admin)/products/page.js",
+  "/(admin)/sections/page": "app/(admin)/sections/page.js",
+  "/(admin)/settings/page": "app/(admin)/settings/page.js",
+  "/(admin)/stock/page": "app/(admin)/stock/page.js",
+  "/(admin)/users/page": "app/(admin)/users/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
+}

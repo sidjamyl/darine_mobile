@@ -10,6 +10,10 @@ import { eq, or } from "drizzle-orm";
 
 import { normalizeAlgerianPhone } from "./phone";
 
+function getTrustedOrigins() {
+  return env.CORS_ORIGIN.split(",").map((origin) => origin.trim()).filter(Boolean);
+}
+
 export function createAuth() {
   const db = createDb();
 
@@ -20,7 +24,7 @@ export function createAuth() {
       schema: schema,
     }),
     trustedOrigins: [
-      env.CORS_ORIGIN,
+      ...getTrustedOrigins(),
       "app://",
       ...(env.NODE_ENV === "development"
         ? ["exp://", "exp://**", "exp://192.168.*.*:*/**", "http://localhost:8081"]

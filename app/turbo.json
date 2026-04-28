@@ -1,6 +1,23 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalPassThroughEnv": [
+    "DATABASE_URL",
+    "BETTER_AUTH_SECRET",
+    "BETTER_AUTH_URL",
+    "CORS_ORIGIN",
+    "CLOUDINARY_CLOUD_NAME",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_API_SECRET",
+    "RESEND_API_KEY",
+    "RESEND_FROM_EMAIL",
+    "SEED_OWNER_EMAIL",
+    "SEED_OWNER_PASSWORD",
+    "SEED_OWNER_NAME",
+    "EXPO_PUBLIC_SERVER_URL",
+    "NEXT_PUBLIC_SERVER_URL",
+    "EXPO_UNSTABLE_HEADLESS"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -18,6 +35,12 @@
       "persistent": true
     },
     "db:push": {
+      "cache": false
+    },
+    "db:seed": {
+      "cache": false
+    },
+    "seed:owner": {
       "cache": false
     },
     "db:generate": {

@@ -2,7 +2,7 @@ import { Drawer } from "expo-router/drawer";
 import { useThemeColor } from "heroui-native";
 
 import { JoumlaDrawerContent } from "@/components/joumla-drawer-content";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ShellHeaderActions } from "@/components/shell-header-actions";
 import { useAppTheme } from "@/contexts/app-theme-context";
 
 function DrawerLayout() {
@@ -20,7 +20,7 @@ function DrawerLayout() {
           fontWeight: "600",
           color: themeColorForeground,
         },
-        headerRight: () => <ThemeToggle />,
+        headerRight: () => <ShellHeaderActions />,
         drawerStyle: { backgroundColor: themeColorBackground },
         sceneContainerStyle: { backgroundColor: themeColorBackground },
       }}
@@ -43,6 +43,20 @@ function DrawerLayout() {
         name="orders"
         options={{
           title: t("orders"),
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+      <Drawer.Screen
+        name="order/[orderId]"
+        options={{
+          title: t("orderDetail"),
+          drawerItemStyle: { display: "none" },
+        }}
+      />
+      <Drawer.Screen
+        name="notifications"
+        options={{
+          title: t("notifications"),
           drawerItemStyle: { display: "none" },
         }}
       />

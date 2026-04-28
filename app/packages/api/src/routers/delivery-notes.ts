@@ -51,7 +51,7 @@ type DeliveryNoteOrderRecord = {
   } | null;
 };
 
-const DELIVERY_NOTE_ALLOWED_STATUSES = new Set(["processing", "processed"] as const);
+const DELIVERY_NOTE_ALLOWED_STATUSES = new Set<string>(["processing", "processed"]);
 
 function formatDeliveryNoteNumber(year: number, sequence: number) {
   return `BL-${year}-${String(sequence).padStart(6, "0")}`;

@@ -166,7 +166,7 @@ export async function transitionOrderStatus(ctx: OrderLifecycleContext, orderId:
   return ctx.db.transaction(async (tx) => {
     const lifecycleCtx = {
       ...ctx,
-      db: tx as Context["db"],
+      db: tx as unknown as Context["db"],
     };
     const orderRecord = await getLifecycleOrderOrThrow(lifecycleCtx.db, orderId);
 

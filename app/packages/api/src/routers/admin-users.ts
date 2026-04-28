@@ -3,7 +3,7 @@ import { account, session, user } from "@app/db/schema/auth";
 import { customerOrder } from "@app/db/schema/order";
 import { clientProfile, commune, wilaya } from "@app/db/schema/profile";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, or } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
 import { z } from "zod";
 
 import type { Context } from "../context";

@@ -3,7 +3,7 @@ import { DrawerToggleButton } from "@react-navigation/drawer";
 import { Tabs } from "expo-router";
 import { useThemeColor } from "heroui-native";
 
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ShellHeaderActions } from "@/components/shell-header-actions";
 import { useAppTheme } from "@/contexts/app-theme-context";
 import { joumlaColors } from "@/lib/app-shell";
 
@@ -25,7 +25,7 @@ export default function TabLayout() {
           fontWeight: "600",
         },
         headerLeft: () => <DrawerToggleButton tintColor={joumlaColors.pink} />,
-        headerRight: () => <ThemeToggle />,
+        headerRight: () => <ShellHeaderActions />,
         tabBarStyle: {
           backgroundColor: themeColorBackground,
           borderTopColor: isDark ? "#24304A" : joumlaColors.line,

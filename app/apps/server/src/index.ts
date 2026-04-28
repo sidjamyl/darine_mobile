@@ -8,10 +8,11 @@ import cors from "cors";
 import express from "express";
 
 const app = express();
+const corsOrigins = env.CORS_ORIGIN.split(",").map((origin) => origin.trim()).filter(Boolean);
 
 app.use(
   cors({
-    origin: env.CORS_ORIGIN,
+    origin: corsOrigins,
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,

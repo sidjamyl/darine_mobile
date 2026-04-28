@@ -26,6 +26,8 @@ export type TranslationKey =
   | "productDetail"
   | "profile"
   | "orders"
+  | "orderDetail"
+  | "notifications"
   | "language"
   | "admin"
   | "login"
@@ -68,6 +70,8 @@ const translations: Record<AppLanguage, Record<TranslationKey, string>> = {
     productDetail: "Detail produit",
     profile: "Profil",
     orders: "Commandes",
+    orderDetail: "Detail commande",
+    notifications: "Notifications",
     language: "Langue",
     admin: "Admin",
     login: "Connexion",
@@ -109,6 +113,8 @@ const translations: Record<AppLanguage, Record<TranslationKey, string>> = {
     productDetail: "تفاصيل المنتج",
     profile: "الملف الشخصي",
     orders: "الطلبات",
+    orderDetail: "تفاصيل الطلب",
+    notifications: "الاشعارات",
     language: "اللغة",
     admin: "الادارة",
     login: "تسجيل الدخول",

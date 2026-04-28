@@ -11,6 +11,7 @@ import { Container } from "@/components/container";
 import { JoumlaSymbol } from "@/components/joumla-symbol";
 import { RestartRtlBanner } from "@/components/restart-rtl-banner";
 import { useAppTheme } from "@/contexts/app-theme-context";
+import { useCart } from "@/contexts/cart-context";
 import { authClient } from "@/lib/auth-client";
 import { joumlaColors } from "@/lib/app-shell";
 import { queryClient, trpc } from "@/utils/trpc";
@@ -20,7 +21,6 @@ const copy = {
     loading: "Chargement du produit...",
     error: "Impossible de charger ce produit.",
     addToCart: "Ajouter au panier",
-    cartQueued: "Produit selectionne. Le panier sera finalise dans l'etape checkout.",
     loginRequired: "Connectez-vous pour utiliser les favoris.",
     favoriteAdded: "Produit ajoute aux favoris.",
     favoriteRemoved: "Produit retire des favoris.",
@@ -38,7 +38,6 @@ const copy = {
     loading: "جاري تحميل المنتج...",
     error: "تعذر تحميل هذا المنتج.",
     addToCart: "اضافة الى السلة",
-    cartQueued: "تم اختيار المنتج. سيتم اكمال السلة في مرحلة الدفع.",
     loginRequired: "سجل الدخول لاستخدام المفضلة.",
     favoriteAdded: "تمت اضافة المنتج الى المفضلة.",
     favoriteRemoved: "تم حذف المنتج من المفضلة.",
@@ -60,6 +59,7 @@ export default function ProductDetailScreen() {
   const { language, isDark, isRtl } = useAppTheme();
   const labels = copy[language];
   const { toast } = useToast();
+  const cart = useCart();
   const { data: session } = authClient.useSession();
   const product = useQuery({
     ...trpc.catalog.detail.queryOptions({ productId: resolvedProductId ?? "missing" }),
@@ -106,7 +106,7 @@ export default function ProductDetailScreen() {
       return;
     }
 
-    toast.show({ variant: "success", label: labels.cartQueued });
+    cart.requestAdd(product.data);
   }
 
   return (
