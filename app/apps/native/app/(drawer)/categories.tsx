@@ -29,7 +29,7 @@ const copy = {
 export default function CategoriesScreen() {
   const { language, isDark, isRtl } = useAppTheme();
   const labels = copy[language];
-  const filterOptions = useQuery(trpc.catalog.filterOptions.queryOptions());
+  const categories = useQuery(trpc.catalog.activeCategories.queryOptions());
 
   return (
     <Container className="p-6">
@@ -43,7 +43,7 @@ export default function CategoriesScreen() {
             {labels.body}
           </Text>
         </View>
-        {filterOptions.isLoading ? (
+        {categories.isLoading ? (
           <View style={{ flexDirection: isRtl ? "row-reverse" : "row", gap: 10, alignItems: "center" }}>
             <Spinner size="sm" color="default" />
             <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate }}>
@@ -51,13 +51,13 @@ export default function CategoriesScreen() {
             </Text>
           </View>
         ) : null}
-        {filterOptions.data?.categories.length === 0 ? (
+        {categories.data?.length === 0 ? (
           <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, textAlign: isRtl ? "right" : "left" }}>
             {labels.empty}
           </Text>
         ) : null}
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
-          {(filterOptions.data?.categories ?? []).map((category) => (
+          {(categories.data ?? []).map((category) => (
             <Pressable
               key={category.id}
               onPress={() => router.push({ pathname: "/products", params: { categoryId: category.id } })}

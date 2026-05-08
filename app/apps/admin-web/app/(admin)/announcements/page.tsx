@@ -1,5 +1,5 @@
-import { UsersAdminPage } from "@/components/users-admin";
+import { AnnouncementsPageClient } from "@/components/admin-pages";
 
 export default function AnnouncementsPage() {
-  return <UsersAdminPage />;
+  return <AnnouncementsPageClient />;
 }

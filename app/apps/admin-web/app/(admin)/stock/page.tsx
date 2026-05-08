@@ -1,5 +1,5 @@
-import { CatalogAdminPage } from "@/components/catalog-admin";
+import { StockPageClient } from "@/components/admin-pages";
 
 export default function StockPage() {
-  return <CatalogAdminPage />;
+  return <StockPageClient />;
 }

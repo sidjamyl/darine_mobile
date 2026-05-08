@@ -27,6 +27,7 @@
     "dev:server": "turbo -F server dev",
     "db:push": "turbo -F @app/db db:push",
     "db:seed": "turbo -F @app/db db:seed",
+    "db:seed:catalog": "turbo -F @app/db db:seed:catalog",
     "auth:seed-owner": "turbo -F @app/auth seed:owner",
     "db:studio": "turbo -F @app/db db:studio",
     "db:generate": "turbo -F @app/db db:generate",

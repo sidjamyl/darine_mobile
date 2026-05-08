@@ -40,6 +40,9 @@
     "db:seed": {
       "cache": false
     },
+    "db:seed:catalog": {
+      "cache": false
+    },
     "seed:owner": {
       "cache": false
     },

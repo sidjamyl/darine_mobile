@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import { Chip, Spinner } from "heroui-native";
+import { Spinner } from "heroui-native";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, useWindowDimensions, View } from "react-native";
@@ -212,41 +212,6 @@ export default function Home() {
     <Container className="p-6">
       <View style={{ gap: 22 }}>
         <RestartRtlBanner />
-
-        <View
-          style={{
-            backgroundColor: isDark ? joumlaColors.darkCard : joumlaColors.navy,
-            borderRadius: 32,
-            padding: 24,
-            gap: 18,
-          }}
-        >
-          <Chip size="sm" variant="secondary" color="primary">
-            <Chip.Label>{t("shellBadge")}</Chip.Label>
-          </Chip>
-          <View style={{ flexDirection: isRtl ? "row-reverse" : "row", gap: 16, alignItems: "center" }}>
-            <View
-              style={{
-                width: 78,
-                height: 78,
-                borderRadius: 26,
-                backgroundColor: "rgba(255,255,255,0.92)",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <JoumlaSymbol size={58} />
-            </View>
-            <View style={{ flex: 1, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-              <Text selectable style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "800" }}>
-                {t("appName")}
-              </Text>
-              <Text selectable style={{ color: "#E2E8F0", fontSize: 14, lineHeight: 20, marginTop: 6, textAlign: isRtl ? "right" : "left" }}>
-                {t("appTagline")}
-              </Text>
-            </View>
-          </View>
-        </View>
 
         {homeContent.isLoading ? (
           <View style={{ alignItems: "center", gap: 10, padding: 24 }}>

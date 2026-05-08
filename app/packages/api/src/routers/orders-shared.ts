@@ -293,17 +293,7 @@ export async function validateCheckout(ctx: CheckoutContext, input: ValidateCart
     const discountLotPrice = normalizeNullableMoney(productRecord.discountLotPrice);
     const regularLotPrice = calculateLotPrice(unitPrice, productRecord.lotQuantity);
     const effectiveLotPrice = discountLotPrice ?? regularLotPrice;
-    const productImageUrl = productRecord.imageAsset?.url;
-
-    if (!productImageUrl) {
-      unavailableProducts.push({
-        productId: productRecord.id,
-        reason: "not_found",
-        productNameFr: productRecord.nameFr,
-        productNameAr: productRecord.nameAr,
-      });
-      continue;
-    }
+    const productImageUrl = productRecord.imageAsset?.url ?? "";
 
     const resolvedLine: CheckoutResolvedLine = {
       productId: productRecord.id,

@@ -350,3 +350,21 @@ export async function listCatalogFilterOptions(ctx: Pick<Context, "db">) {
     })),
   };
 }
+
+export async function listActiveCategories(ctx: Pick<Context, "db">) {
+  const categories = await ctx.db.query.category.findMany({
+    where: eq(category.isActive, true),
+    orderBy: (categoriesTable, { asc }) => [asc(categoriesTable.sortOrder), asc(categoriesTable.nameFr)],
+    with: {
+      imageAsset: true,
+    },
+  });
+
+  return categories.map((categoryRecord) => ({
+    id: categoryRecord.id,
+    nameFr: categoryRecord.nameFr,
+    nameAr: categoryRecord.nameAr,
+    sortOrder: categoryRecord.sortOrder,
+    image: mapAsset(categoryRecord.imageAsset),
+  }));
+}

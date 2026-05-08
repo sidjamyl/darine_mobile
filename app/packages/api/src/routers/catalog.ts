@@ -5,6 +5,7 @@ import { publicProcedure, router } from "../index";
 import {
   DEFAULT_CATALOG_LIMIT,
   getOptionalViewerUserId,
+  listActiveCategories,
   listCatalogFilterOptions,
   loadVisibleCatalogProductsByIds,
   MAX_CATALOG_LIMIT,
@@ -59,6 +60,10 @@ export const catalogRouter = router({
 
   filterOptions: publicProcedure.query(async ({ ctx }) => {
     return listCatalogFilterOptions(ctx);
+  }),
+
+  activeCategories: publicProcedure.query(async ({ ctx }) => {
+    return listActiveCategories(ctx);
   }),
 
   defaults: publicProcedure.query(() => {

@@ -42,9 +42,7 @@ export const brand = pgTable(
   {
     id: text("id").primaryKey(),
     name: text("name").notNull(),
-    logoAssetId: text("logo_asset_id")
-      .notNull()
-      .references(() => asset.id, { onDelete: "restrict" }),
+    logoAssetId: text("logo_asset_id").references(() => asset.id, { onDelete: "restrict" }),
     isActive: boolean("is_active").default(true).notNull(),
     isFeatured: boolean("is_featured").default(false).notNull(),
     sortOrder: integer("sort_order").default(0).notNull(),
@@ -63,9 +61,7 @@ export const category = pgTable(
     id: text("id").primaryKey(),
     nameFr: text("name_fr").notNull(),
     nameAr: text("name_ar").notNull(),
-    imageAssetId: text("image_asset_id")
-      .notNull()
-      .references(() => asset.id, { onDelete: "restrict" }),
+    imageAssetId: text("image_asset_id").references(() => asset.id, { onDelete: "restrict" }),
     isActive: boolean("is_active").default(true).notNull(),
     isFeatured: boolean("is_featured").default(false).notNull(),
     sortOrder: integer("sort_order").default(0).notNull(),
@@ -93,9 +89,7 @@ export const product = pgTable(
     brandId: text("brand_id")
       .notNull()
       .references(() => brand.id, { onDelete: "restrict" }),
-    imageAssetId: text("image_asset_id")
-      .notNull()
-      .references(() => asset.id, { onDelete: "restrict" }),
+    imageAssetId: text("image_asset_id").references(() => asset.id, { onDelete: "restrict" }),
     stockLots: integer("stock_lots").default(0).notNull(),
     lowStockThreshold: integer("low_stock_threshold"),
     sku: text("sku"),

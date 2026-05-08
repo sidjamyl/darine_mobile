@@ -8,8 +8,9 @@ import {
   product,
   productCategory,
 } from "@app/db/schema/catalog";
+import { adminAuditLog, stockMovement } from "@app/db/schema/order";
 import { TRPCError } from "@trpc/server";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import type { Context } from "../context";
@@ -24,10 +25,11 @@ import {
 } from "./catalog-shared";
 
 const assetIdSchema = z.string().trim().min(1);
+const optionalAssetIdSchema = z.string().trim().optional().transform((value) => value || null);
 
 const brandInputSchema = z.object({
   name: z.string().trim().min(1),
-  logoAssetId: assetIdSchema,
+  logoAssetId: optionalAssetIdSchema,
   isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   sortOrder: z.number().int().default(0),
@@ -36,7 +38,7 @@ const brandInputSchema = z.object({
 const categoryInputSchema = z.object({
   nameFr: z.string().trim().min(1),
   nameAr: z.string().trim().min(1),
-  imageAssetId: assetIdSchema,
+  imageAssetId: optionalAssetIdSchema,
   isActive: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   sortOrder: z.number().int().default(0),
@@ -50,7 +52,7 @@ const productBaseInputSchema = z.object({
   packagingLabel: z.string().trim().min(1),
   brandId: z.string().trim().min(1),
   categoryIds: z.array(z.string().trim().min(1)).min(1),
-  imageAssetId: assetIdSchema,
+  imageAssetId: optionalAssetIdSchema,
   stockLots: z.number().int().min(0),
   lowStockThreshold: z.number().int().min(0).nullable().optional(),
   sku: z.string().trim().max(120).optional(),
@@ -265,9 +267,13 @@ function mapProductRecord(productRecord: {
 
 async function assertAssetKind(
   ctx: Pick<Context, "db">,
-  assetId: string,
+  assetId: string | null,
   expectedKind: "product" | "brand" | "category" | "banner",
 ) {
+  if (!assetId) {
+    return;
+  }
+
   const existingAsset = await ctx.db.query.asset.findFirst({
     where: and(eq(asset.id, assetId), eq(asset.kind, expectedKind)),
   });
@@ -588,6 +594,54 @@ export const adminCatalogRouter = router({
         }
 
         return { id: updatedProduct.id, isArchived: input.isArchived };
+      }),
+
+    adjustStock: adminProcedure
+      .input(
+        z.object({
+          productId: z.string().trim().min(1),
+          quantityLotsDelta: z.number().int().refine((value) => value !== 0, "Delta cannot be zero"),
+          note: z.string().trim().min(3).max(240),
+        }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        const existingProduct = await ctx.db.query.product.findFirst({
+          where: eq(product.id, input.productId),
+        });
+
+        if (!existingProduct) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Product not found" });
+        }
+
+        if (existingProduct.stockLots + input.quantityLotsDelta < 0) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: "Stock cannot become negative" });
+        }
+
+        await ctx.db.transaction(async (tx) => {
+          await tx
+            .update(product)
+            .set({ stockLots: sql<number>`${product.stockLots} + ${input.quantityLotsDelta}` })
+            .where(eq(product.id, input.productId));
+
+          await tx.insert(stockMovement).values({
+            id: createId("stock-movement"),
+            productId: input.productId,
+            adminUserId: ctx.user.id,
+            quantityLotsDelta: input.quantityLotsDelta,
+            reason: "manual_adjustment",
+          });
+
+          await tx.insert(adminAuditLog).values({
+            id: createId("audit"),
+            adminUserId: ctx.user.id,
+            action: "stock.adjust",
+            targetType: "product",
+            targetId: input.productId,
+            summary: `${input.quantityLotsDelta > 0 ? "+" : ""}${input.quantityLotsDelta} lots: ${input.note}`,
+          });
+        });
+
+        return { id: input.productId };
       }),
   }),
 

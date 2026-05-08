@@ -1,5 +1,5 @@
-import { UsersAdminPage } from "@/components/users-admin";
+import { SettingsPageClient } from "@/components/admin-pages";
 
 export default function SettingsPage() {
-  return <UsersAdminPage />;
+  return <SettingsPageClient />;
 }

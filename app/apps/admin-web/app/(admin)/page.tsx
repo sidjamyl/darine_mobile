@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/module-page";
+import { DashboardPageClient } from "@/components/admin-pages";
 
 export default function DashboardPage() {
-  return <ModulePage href="/" />;
+  return <DashboardPageClient />;
 }
