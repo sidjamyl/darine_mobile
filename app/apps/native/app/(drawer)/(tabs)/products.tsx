@@ -70,7 +70,7 @@ export default function ProductsScreen() {
           alignItems: isRtl ? "flex-end" : "flex-start",
         }}
       >
-        <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 26, fontWeight: "900" }}>
+        <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 26, fontWeight: "700" }}>
           {labels.title}
         </Text>
         <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, lineHeight: 21, textAlign: isRtl ? "right" : "left" }}>

@@ -138,7 +138,7 @@ export default function CartScreen() {
     <Container className="p-6">
       <View style={{ gap: 18 }}>
         <RestartRtlBanner />
-        <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 30, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+        <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 30, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
           {labels.title}
         </Text>
 
@@ -170,10 +170,10 @@ export default function CartScreen() {
                 {item.product.image?.url ? <Image source={{ uri: item.product.image.url }} contentFit="cover" style={{ width: "100%", height: "100%" }} /> : <JoumlaSymbol size={42} />}
               </View>
               <View style={{ flex: 1, gap: 8, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 16, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 16, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
                   {getLocalizedName(language, item.product)}
                 </Text>
-                <Text selectable style={{ color: joumlaColors.pink, fontWeight: "900" }}>
+                <Text selectable style={{ color: joumlaColors.pink, fontWeight: "700" }}>
                   {formatDa(Number(item.product.discountLotPrice || item.product.lotPrice) * item.quantityLots)}
                 </Text>
                 <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate }}>
@@ -186,7 +186,7 @@ export default function CartScreen() {
                 <Pressable onPress={() => cart.decrement(item.product.id)} style={{ width: 38, height: 38, borderRadius: 19, alignItems: "center", justifyContent: "center", backgroundColor: isDark ? joumlaColors.navySoft : joumlaColors.cream }}>
                   <Ionicons name="remove" size={18} color={joumlaColors.pink} />
                 </Pressable>
-                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 20, fontWeight: "900", fontVariant: ["tabular-nums"] }}>
+                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 20, fontWeight: "700", fontVariant: ["tabular-nums"] }}>
                   {item.quantityLots}
                 </Text>
                 <Pressable onPress={() => cart.increment(item.product.id)} style={{ width: 38, height: 38, borderRadius: 19, alignItems: "center", justifyContent: "center", backgroundColor: isDark ? joumlaColors.navySoft : joumlaColors.cream }}>
@@ -203,10 +203,10 @@ export default function CartScreen() {
         {cart.items.length > 0 ? (
           <View style={{ backgroundColor: isDark ? joumlaColors.darkCard : "#FFFFFF", borderRadius: 28, padding: 18, gap: 14, borderWidth: 1, borderColor: isDark ? "#27334A" : joumlaColors.line }}>
             <View style={{ flexDirection: isRtl ? "row-reverse" : "row", justifyContent: "space-between" }}>
-              <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "800" }}>
+              <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "700" }}>
                 {labels.total}
               </Text>
-              <Text selectable style={{ color: joumlaColors.pink, fontSize: 22, fontWeight: "900" }}>
+              <Text selectable style={{ color: joumlaColors.pink, fontSize: 22, fontWeight: "700" }}>
                 {formatDa(cart.totalAmount)}
               </Text>
             </View>

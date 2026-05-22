@@ -66,10 +66,10 @@ export function JoumlaDrawerContent(props: DrawerContentComponentProps) {
               <JoumlaSymbol size={48} />
             </View>
             <View style={{ flex: 1, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-              <Chip size="sm" variant="secondary" color="primary">
+              <Chip size="sm" variant="secondary">
                 <Chip.Label>{t("shellBadge")}</Chip.Label>
               </Chip>
-              <Text selectable style={{ color: textPrimary, fontSize: 22, fontWeight: "800", marginTop: 10 }}>
+              <Text selectable style={{ color: textPrimary, fontSize: 22, fontWeight: "700", marginTop: 10 }}>
                 {t("appName")}
               </Text>
               <Text selectable style={{ color: textSecondary, fontSize: 13, lineHeight: 18, marginTop: 4 }}>
@@ -109,7 +109,7 @@ export function JoumlaDrawerContent(props: DrawerContentComponentProps) {
               inactiveTintColor={textPrimary}
               activeBackgroundColor={isDark ? joumlaColors.navySoft : joumlaColors.pinkSoft}
               onPress={() => {
-                router.push(link.href);
+                router.push(link.href as never);
                 props.navigation.closeDrawer();
               }}
               icon={({ color, size }) => <Ionicons name={link.icon as keyof typeof Ionicons.glyphMap} size={size} color={color} />}

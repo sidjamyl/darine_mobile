@@ -42,6 +42,16 @@ const updateClientPhoneSchema = z.object({
   phoneNumber: z.string().trim().min(1),
 });
 
+const updateCustomerProfileSchema = z.object({
+  userId: z.string().trim().min(1),
+  fullName: z.string().trim().min(2),
+  wilayaId: z.string().trim().min(1),
+  communeId: z.string().trim().min(1),
+  streetAddress: z.string().trim().min(1),
+  latitude: z.number().min(-90).max(90).nullable().optional(),
+  longitude: z.number().min(-180).max(180).nullable().optional(),
+});
+
 async function assertValidCustomerLocation(ctx: Pick<Context, "db">, input: z.infer<typeof customerProfileSchema>) {
   const selectedWilaya = await ctx.db.query.wilaya.findFirst({
     where: eq(wilaya.id, input.wilayaId),
@@ -56,6 +66,24 @@ async function assertValidCustomerLocation(ctx: Pick<Context, "db">, input: z.in
       eq(commune.id, input.communeId),
       eq(commune.wilayaId, input.wilayaId),
     ),
+  });
+
+  if (!selectedCommune) {
+    throw new TRPCError({ code: "BAD_REQUEST", message: "Invalid commune for selected wilaya" });
+  }
+}
+
+async function assertValidLocation(ctx: Pick<Context, "db">, input: { wilayaId: string; communeId: string }) {
+  const selectedWilaya = await ctx.db.query.wilaya.findFirst({
+    where: eq(wilaya.id, input.wilayaId),
+  });
+
+  if (!selectedWilaya) {
+    throw new TRPCError({ code: "BAD_REQUEST", message: "Invalid wilaya" });
+  }
+
+  const selectedCommune = await ctx.db.query.commune.findFirst({
+    where: and(eq(commune.id, input.communeId), eq(commune.wilayaId, input.wilayaId)),
   });
 
   if (!selectedCommune) {
@@ -386,6 +414,51 @@ export const adminUsersRouter = router({
     };
   }),
 
+  updateCustomerProfile: adminProcedure.input(updateCustomerProfileSchema).mutation(async ({ ctx, input }) => {
+    await assertValidLocation(ctx, input);
+
+    const targetUser = await ctx.db.query.user.findFirst({
+      where: eq(user.id, input.userId),
+    });
+
+    if (!targetUser) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+    }
+
+    if (targetUser.role !== "client") {
+      throw new TRPCError({ code: "BAD_REQUEST", message: "Target user is not a client" });
+    }
+
+    await ctx.db.transaction(async (tx) => {
+      await tx.update(user).set({ name: input.fullName }).where(eq(user.id, input.userId));
+
+      await tx
+        .insert(clientProfile)
+        .values({
+          userId: input.userId,
+          fullName: input.fullName,
+          wilayaId: input.wilayaId,
+          communeId: input.communeId,
+          streetAddress: input.streetAddress,
+          latitude: input.latitude === undefined || input.latitude === null ? null : String(input.latitude),
+          longitude: input.longitude === undefined || input.longitude === null ? null : String(input.longitude),
+        })
+        .onConflictDoUpdate({
+          target: clientProfile.userId,
+          set: {
+            fullName: input.fullName,
+            wilayaId: input.wilayaId,
+            communeId: input.communeId,
+            streetAddress: input.streetAddress,
+            latitude: input.latitude === undefined || input.latitude === null ? null : String(input.latitude),
+            longitude: input.longitude === undefined || input.longitude === null ? null : String(input.longitude),
+          },
+        });
+    });
+
+    return { userId: input.userId };
+  }),
+
   disableUser: adminProcedure.input(z.object({ userId: z.string().min(1) })).mutation(async ({ ctx, input }) => {
     if (ctx.user.id === input.userId) {
       throw new TRPCError({ code: "BAD_REQUEST", message: "Admins cannot disable their own account" });
@@ -407,6 +480,20 @@ export const adminUsersRouter = router({
       await tx.update(user).set({ isDisabled: true }).where(eq(user.id, input.userId));
       await tx.delete(session).where(eq(session.userId, input.userId));
     });
+
+    return { success: true };
+  }),
+
+  enableUser: adminProcedure.input(z.object({ userId: z.string().min(1) })).mutation(async ({ ctx, input }) => {
+    const targetUser = await ctx.db.query.user.findFirst({
+      where: eq(user.id, input.userId),
+    });
+
+    if (!targetUser) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+    }
+
+    await ctx.db.update(user).set({ isDisabled: false }).where(eq(user.id, input.userId));
 
     return { success: true };
   }),

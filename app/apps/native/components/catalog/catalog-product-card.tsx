@@ -154,7 +154,7 @@ export function CatalogProductCard({ product, style }: CatalogProductCardProps) 
               backgroundColor: product.badgeColor || joumlaColors.pink,
             }}
           >
-            <Text selectable style={{ color: "#FFFFFF", fontSize: 11, fontWeight: "800" }}>
+            <Text selectable style={{ color: "#FFFFFF", fontSize: 11, fontWeight: "700" }}>
               {product.badgeLabel}
             </Text>
           </View>
@@ -190,7 +190,7 @@ export function CatalogProductCard({ product, style }: CatalogProductCardProps) 
             minHeight: 38,
             color: isDark ? "#F8FAFC" : joumlaColors.navy,
             fontSize: 14,
-            fontWeight: "800",
+            fontWeight: "700",
             lineHeight: 19,
             textAlign: isRtl ? "right" : "left",
           }}
@@ -199,7 +199,7 @@ export function CatalogProductCard({ product, style }: CatalogProductCardProps) 
         </Text>
 
         <View style={{ width: "100%", gap: 3, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-          <Text selectable style={{ color: joumlaColors.pink, fontSize: 16, fontWeight: "900" }}>
+          <Text selectable style={{ color: joumlaColors.pink, fontSize: 16, fontWeight: "700" }}>
             {formatDa(displayLotPrice)}
           </Text>
           {product.discountLotPrice ? (

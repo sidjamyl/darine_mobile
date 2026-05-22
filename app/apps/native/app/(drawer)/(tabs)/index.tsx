@@ -20,19 +20,19 @@ type HomeContent = RouterOutputs["homeContent"]["get"];
 
 const copy = {
   fr: {
-    banners: "Offres Joumla",
-    brands: "Top marques",
-    categories: "Top categories",
-    featuredProducts: "Produits en avant",
+    banners: "Nos offres",
+    brands: "Nos marques",
+    categories: "Nos categories",
+    featuredProducts: "Produits populaires",
     showMore: "Afficher plus",
     loading: "Chargement du catalogue...",
     error: "Impossible de charger l'accueil catalogue.",
   },
   ar: {
-    banners: "عروض Joumla",
-    brands: "ابرز العلامات",
-    categories: "ابرز الاصناف",
-    featuredProducts: "منتجات مختارة",
+    banners: "عروضنا",
+    brands: "علاماتنا",
+    categories: "اصنافنا",
+    featuredProducts: "منتجات رائجة",
     showMore: "عرض المزيد",
     loading: "جاري تحميل الكتالوج...",
     error: "تعذر تحميل واجهة الكتالوج.",
@@ -65,12 +65,12 @@ function SectionHeader({ title, action }: { title: string; action?: () => void }
 
   return (
     <View style={{ flexDirection: isRtl ? "row-reverse" : "row", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-      <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "900" }}>
+      <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "700" }}>
         {title}
       </Text>
       {action ? (
         <Pressable onPress={action} style={{ paddingVertical: 8 }}>
-          <Text selectable style={{ color: joumlaColors.pink, fontWeight: "900" }}>
+          <Text selectable style={{ color: joumlaColors.pink, fontWeight: "700" }}>
             {labels.showMore}
           </Text>
         </Pressable>
@@ -175,7 +175,7 @@ function HomeTile({
       >
         {imageUrl ? <Image source={{ uri: imageUrl }} contentFit="cover" style={{ width: "100%", height: "100%" }} /> : <JoumlaSymbol size={46} />}
       </View>
-      <Text selectable numberOfLines={2} style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "800", textAlign: "center" }}>
+      <Text selectable numberOfLines={2} style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "700", textAlign: "center" }}>
         {title}
       </Text>
     </Pressable>

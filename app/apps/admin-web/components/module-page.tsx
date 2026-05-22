@@ -7,21 +7,21 @@ export function ModulePage({ href }: { href: AdminModuleHref }) {
   return (
     <main className="module-page">
       <section className="module-hero">
-        <Chip color="primary" variant="flat">Foundation ready</Chip>
+        <Chip color="primary" variant="flat">Module pret</Chip>
         <h2>{module.label}</h2>
         <p>{module.description}</p>
       </section>
       <div className="module-grid">
         <section className="module-card">
           <div className="module-card-body">
-            <h3>Shared layout</h3>
-            <p className="muted">This module is wired into the protected admin shell and ready for its feature implementation issue.</p>
+            <h3>Interface protegee</h3>
+            <p className="muted">Ce module utilise la navigation admin et les droits back-office.</p>
           </div>
         </section>
         <section className="module-card">
           <div className="module-card-body">
-            <h3>tRPC backend</h3>
-            <p className="muted">Admin authorization is validated through the shared tRPC backend before this page is shown.</p>
+            <h3>Backend tRPC</h3>
+            <p className="muted">L'autorisation admin est verifiee avant l'affichage.</p>
           </div>
         </section>
       </div>

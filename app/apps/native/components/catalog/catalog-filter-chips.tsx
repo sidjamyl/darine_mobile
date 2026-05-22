@@ -41,7 +41,7 @@ function FilterChip({ label, isActive, onPress }: { label: string; isActive: boo
         borderColor: isActive ? joumlaColors.pink : isDark ? "#27334A" : joumlaColors.line,
       }}
     >
-      <Text selectable style={{ color: isActive ? "#FFFFFF" : isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "800" }}>
+      <Text selectable style={{ color: isActive ? "#FFFFFF" : isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "700" }}>
         {label}
       </Text>
     </Pressable>

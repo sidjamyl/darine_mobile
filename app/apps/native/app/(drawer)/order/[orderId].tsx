@@ -75,8 +75,9 @@ export default function OrderDetailScreen() {
 
     try {
       const payload = await trpcClient.deliveryNotes.clientDownloadPdf.query({ orderId: resolvedOrderId });
-      const fileUri = `${FileSystem.cacheDirectory}${payload.fileName}`;
-      await FileSystem.writeAsStringAsync(fileUri, payload.base64, { encoding: FileSystem.EncodingType.Base64 });
+      const legacyFileSystem = FileSystem as unknown as { cacheDirectory: string; writeAsStringAsync: typeof FileSystem.writeAsStringAsync };
+      const fileUri = `${legacyFileSystem.cacheDirectory}${payload.fileName}`;
+      await legacyFileSystem.writeAsStringAsync(fileUri, payload.base64, { encoding: "base64" });
 
       if (!(await Sharing.isAvailableAsync())) {
         toast.show({ variant: "danger", label: labels.blUnavailable });
@@ -111,14 +112,14 @@ export default function OrderDetailScreen() {
             <View style={{ backgroundColor: isDark ? joumlaColors.darkCard : "#FFFFFF", borderRadius: 28, borderWidth: 1, borderColor: isDark ? "#27334A" : joumlaColors.line, padding: 20, gap: 12 }}>
               <View style={{ flexDirection: isRtl ? "row-reverse" : "row", justifyContent: "space-between", gap: 12 }}>
                 <View style={{ flex: 1, alignItems: isRtl ? "flex-end" : "flex-start", gap: 6 }}>
-                  <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 26, fontWeight: "900" }}>
+                  <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 26, fontWeight: "700" }}>
                     {order.data.orderNumber}
                   </Text>
                   <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate }}>
                     {formatOrderDate(order.data.createdAt)}
                   </Text>
                 </View>
-                <Text selectable style={{ color: joumlaColors.pink, fontWeight: "900" }}>
+                <Text selectable style={{ color: joumlaColors.pink, fontWeight: "700" }}>
                   {getOrderStatusLabel(language, order.data.status)}
                 </Text>
               </View>
@@ -131,7 +132,7 @@ export default function OrderDetailScreen() {
             </View>
 
             <View style={{ gap: 12 }}>
-              <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+              <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
                 {labels.lines}
               </Text>
               {order.data.lines.map((line) => (
@@ -140,13 +141,13 @@ export default function OrderDetailScreen() {
                     {line.productImageUrlSnapshot ? <Image source={{ uri: line.productImageUrlSnapshot }} contentFit="cover" style={{ width: "100%", height: "100%" }} /> : <Ionicons name="cube-outline" size={28} color={joumlaColors.pink} />}
                   </View>
                   <View style={{ flex: 1, gap: 6, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-                    <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+                    <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
                       {getLocalizedName(language, { nameFr: line.productNameFrSnapshot, nameAr: line.productNameArSnapshot })}
                     </Text>
                     <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate }}>
                       {line.selectedLots} x {line.lotQuantitySnapshot} {line.packagingLabelSnapshot}
                     </Text>
-                    <Text selectable style={{ color: joumlaColors.pink, fontWeight: "900" }}>
+                    <Text selectable style={{ color: joumlaColors.pink, fontWeight: "700" }}>
                       {formatDa(line.lineTotalSnapshot)}
                     </Text>
                   </View>
@@ -156,10 +157,10 @@ export default function OrderDetailScreen() {
 
             <View style={{ backgroundColor: isDark ? joumlaColors.darkCard : "#FFFFFF", borderRadius: 28, borderWidth: 1, borderColor: isDark ? "#27334A" : joumlaColors.line, padding: 18, gap: 14 }}>
               <View style={{ flexDirection: isRtl ? "row-reverse" : "row", justifyContent: "space-between" }}>
-                <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "800" }}>
+                <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "700" }}>
                   {labels.total}
                 </Text>
-                <Text selectable style={{ color: joumlaColors.pink, fontSize: 22, fontWeight: "900" }}>
+                <Text selectable style={{ color: joumlaColors.pink, fontSize: 22, fontWeight: "700" }}>
                   {formatDa(order.data.totalAmountSnapshot)}
                 </Text>
               </View>

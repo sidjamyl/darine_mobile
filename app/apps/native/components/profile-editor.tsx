@@ -150,7 +150,7 @@ export function ProfileEditor({ data }: ProfileEditorProps) {
     >
       <View style={{ gap: 16 }}>
         <View style={{ gap: 4, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 24, fontWeight: "800" }}>
+          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 24, fontWeight: "700" }}>
             {labels.title}
           </Text>
           <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, textAlign: isRtl ? "right" : "left" }}>

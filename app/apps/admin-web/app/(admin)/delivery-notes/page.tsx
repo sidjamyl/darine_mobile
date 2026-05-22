@@ -1,5 +1,5 @@
-import { OrdersAdminPage } from "@/components/orders-admin";
+import { OrdersPageClient } from "@/components/admin-pages";
 
 export default function DeliveryNotesPage() {
-  return <OrdersAdminPage />;
+  return <OrdersPageClient />;
 }

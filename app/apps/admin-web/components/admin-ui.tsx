@@ -39,7 +39,7 @@ export function Button({ children, onPress, isLoading, isDisabled, variant, size
 
   return (
     <button className={className} type="button" disabled={isDisabled || isLoading} onClick={() => void onPress?.()}>
-      {isLoading ? "Working..." : children}
+      {isLoading ? "Chargement..." : children}
     </button>
   );
 }
@@ -147,30 +147,65 @@ export function EmptyAdminState({ label }: { label: string }) {
   return <p className="muted empty-row">{label}</p>;
 }
 
+export function Dialog({
+  title,
+  description,
+  isOpen,
+  onClose,
+  children,
+}: {
+  title: string;
+  description?: string;
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="dialog-backdrop" role="presentation" onMouseDown={onClose}>
+      <section className="dialog-card" role="dialog" aria-modal="true" aria-label={title} onMouseDown={(event) => event.stopPropagation()}>
+        <header className="dialog-header">
+          <div>
+            <h2>{title}</h2>
+            {description ? <p className="muted">{description}</p> : null}
+          </div>
+          <button className="dialog-close" type="button" onClick={onClose} aria-label="Fermer">Fermer</button>
+        </header>
+        <div className="dialog-body">{children}</div>
+      </section>
+    </div>
+  );
+}
+
 export function AssetUploadField({
   kind,
   value,
   onChange,
+  label,
 }: {
   kind: AssetKind;
   value: string;
   onChange: (assetId: string) => void;
+  label?: string;
 }) {
   const [status, setStatus] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
 
   const createSignature = useMutation(trpc.assets.createUploadSignature.mutationOptions());
   const registerAsset = useMutation(
     trpc.assets.registerUploadedAsset.mutationOptions({
       async onSuccess(asset) {
         onChange(asset.id);
-        setStatus(`Uploaded asset ${asset.id}`);
+        setStatus("Image prete.");
         await queryClient.invalidateQueries();
       },
     }),
   );
 
   async function uploadFile(file: File) {
-    setStatus("Uploading...");
+    setFileName(file.name);
+    setStatus("Envoi de l'image...");
     const signature = await createSignature.mutateAsync({ kind });
     const formData = new FormData();
     formData.append("file", file);
@@ -186,7 +221,7 @@ export function AssetUploadField({
     });
 
     if (!response.ok) {
-      setStatus("Upload failed.");
+      setStatus("Echec de l'envoi.");
       return;
     }
 
@@ -213,10 +248,13 @@ export function AssetUploadField({
   }
 
   return (
-    <div className="asset-field">
-      <Input label={`${kind} asset id`} value={value} onValueChange={onChange} placeholder="Upload or paste an asset id" />
+    <div className={value ? "asset-field has-asset" : "asset-field"}>
+      <div>
+        <strong>{label ?? "Image"}</strong>
+        <p className="muted">Ajoutez une image depuis votre ordinateur. Le champ technique est masque.</p>
+      </div>
       <label className="file-button">
-        Upload {kind} image
+        Choisir une image
         <input
           type="file"
           accept="image/*"
@@ -226,7 +264,8 @@ export function AssetUploadField({
           }}
         />
       </label>
-      {status ? <p className="muted small-text">{status}</p> : null}
+      {fileName ? <p className="muted small-text">{fileName}</p> : null}
+      {status ? <p className="muted small-text">{status}</p> : value ? <p className="muted small-text">Image conservee.</p> : null}
     </div>
   );
 }
@@ -262,11 +301,43 @@ export function EntitySelect({
     <label className="native-select-label">
       <span>{label}</span>
       <select value={value} onChange={(event) => onChange(event.target.value)}>
-        <option value="">Choose...</option>
+        <option value="">Choisir...</option>
         {items.map((item) => (
           <option key={item.id} value={item.id}>{item.label}</option>
         ))}
       </select>
     </label>
+  );
+}
+
+export function MultiSelect({
+  label,
+  values,
+  onChange,
+  items,
+}: {
+  label: string;
+  values: string[];
+  onChange: (values: string[]) => void;
+  items: Array<{ id: string; label: string }>;
+}) {
+  function toggle(id: string) {
+    onChange(values.includes(id) ? values.filter((value) => value !== id) : [...values, id]);
+  }
+
+  return (
+    <div className="multi-field">
+      <span>{label}</span>
+      <div className="multi-options">
+        {items.map((item) => {
+          const selected = values.includes(item.id);
+          return (
+            <button key={item.id} type="button" className={selected ? "multi-option selected" : "multi-option"} onClick={() => toggle(item.id)}>
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }

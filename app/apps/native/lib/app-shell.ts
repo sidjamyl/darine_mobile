@@ -97,7 +97,7 @@ const translations: Record<AppLanguage, Record<TranslationKey, string>> = {
     clientAreaBody: "Connectez-vous pour retrouver votre profil, vos favoris et vos futures commandes.",
     accountConnected: "Compte connecte",
     accountGuest: "Compte visiteur",
-    shellBadge: "Fondation mobile Joumla",
+    shellBadge: "Joumla Store",
     rtlPending: "RTL en attente de redemarrage",
   },
   ar: {
@@ -140,7 +140,7 @@ const translations: Record<AppLanguage, Record<TranslationKey, string>> = {
     clientAreaBody: "سجل الدخول للوصول الى ملفك، مفضلتك وطلباتك القادمة.",
     accountConnected: "الحساب متصل",
     accountGuest: "حساب زائر",
-    shellBadge: "اساس تطبيق Joumla",
+    shellBadge: "جملة ستور",
     rtlPending: "RTL بانتظار اعادة التشغيل",
   },
 };

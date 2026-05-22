@@ -19,12 +19,12 @@ export function LoginCard() {
     try {
       const result = await authClient.signIn.email({ email, password, rememberMe: true });
       if (result.error) {
-        setError(result.error.message ?? "Unable to sign in.");
+        setError(result.error.message ?? "Connexion impossible.");
         return;
       }
       await queryClient.invalidateQueries();
     } catch {
-      setError("Unable to sign in.");
+      setError("Connexion impossible.");
     } finally {
       setIsSubmitting(false);
     }
@@ -35,15 +35,15 @@ export function LoginCard() {
       <section className="auth-card">
         <div className="auth-card-body">
           <div>
-            <p className="eyebrow">Joumla Admin</p>
-            <h1>Back-office sign in</h1>
-            <p className="muted">Use your admin email and password to manage Joumla Store operations.</p>
+            <p className="eyebrow">Admin Joumla</p>
+            <h1>Connexion espace admin</h1>
+            <p className="muted">Utilisez votre email admin et votre mot de passe.</p>
           </div>
           <Input label="Email" type="email" value={email} onValueChange={setEmail} autoComplete="email" />
-          <Input label="Password" type="password" value={password} onValueChange={setPassword} autoComplete="current-password" onKeyDown={(event) => event.key === "Enter" && submit()} />
+          <Input label="Mot de passe" type="password" value={password} onValueChange={setPassword} autoComplete="current-password" onKeyDown={(event) => event.key === "Enter" && submit()} />
           {error ? <p className="form-error">{error}</p> : null}
           <Button color="primary" onPress={submit} isLoading={isSubmitting} isDisabled={!email || password.length < 6}>
-            Sign in
+            Se connecter
           </Button>
         </div>
       </section>

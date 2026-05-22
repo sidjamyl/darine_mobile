@@ -22,7 +22,6 @@ function DrawerLayout() {
         },
         headerRight: () => <ShellHeaderActions />,
         drawerStyle: { backgroundColor: themeColorBackground },
-        sceneContainerStyle: { backgroundColor: themeColorBackground },
       }}
     >
       <Drawer.Screen

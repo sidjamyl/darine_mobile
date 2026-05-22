@@ -159,7 +159,7 @@ export default function ProductDetailScreen() {
                     backgroundColor: product.data.badgeColor || joumlaColors.pink,
                   }}
                 >
-                  <Text selectable style={{ color: "#FFFFFF", fontWeight: "900" }}>
+                  <Text selectable style={{ color: "#FFFFFF", fontWeight: "700" }}>
                     {product.data.badgeLabel}
                   </Text>
                 </View>
@@ -185,11 +185,11 @@ export default function ProductDetailScreen() {
             </View>
 
             <View style={{ gap: 14, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-              <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 30, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+              <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 30, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
                 {getLocalizedName(language, product.data)}
               </Text>
               {product.data.brand ? (
-                <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "800" }}>
+                <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "700" }}>
                   {labels.brand}: {product.data.brand.name}
                 </Text>
               ) : null}
@@ -214,7 +214,7 @@ export default function ProductDetailScreen() {
                   <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "700" }}>
                     {row.label}
                   </Text>
-                  <Text selectable style={{ color: row.highlight ? joumlaColors.pink : isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "900" }}>
+                  <Text selectable style={{ color: row.highlight ? joumlaColors.pink : isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "700" }}>
                     {row.value}
                   </Text>
                 </View>
@@ -228,13 +228,13 @@ export default function ProductDetailScreen() {
 
             {product.data.categories.length > 0 ? (
               <View style={{ gap: 10, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "900" }}>
+                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "700" }}>
                   {labels.categories}
                 </Text>
                 <View style={{ flexDirection: isRtl ? "row-reverse" : "row", flexWrap: "wrap", gap: 8 }}>
                   {product.data.categories.map((category) => (
                     <View key={category.id} style={{ borderRadius: 999, backgroundColor: isDark ? joumlaColors.navySoft : joumlaColors.cream, paddingHorizontal: 12, paddingVertical: 7 }}>
-                      <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "800" }}>
+                      <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "700" }}>
                         {getLocalizedName(language, category)}
                       </Text>
                     </View>
@@ -244,7 +244,7 @@ export default function ProductDetailScreen() {
             ) : null}
 
             <View style={{ gap: 8, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-              <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "900" }}>
+              <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "700" }}>
                 {labels.description}
               </Text>
               <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, lineHeight: 22, textAlign: isRtl ? "right" : "left" }}>

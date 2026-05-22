@@ -21,7 +21,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   });
 
   if (isSessionPending) {
-    return <main className="state-page">Loading admin session...</main>;
+    return <main className="state-page">Chargement de la session...</main>;
   }
 
   if (!session?.user) {
@@ -33,9 +33,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <main className="state-page">
         <section className="state-card">
           <div className="state-card-body">
-            <Chip color="danger" variant="flat">Access denied</Chip>
-            <h1>Admin access required</h1>
-            <p className="muted">This account is signed in but does not have admin or owner permissions.</p>
+            <Chip color="danger" variant="flat">Acces refuse</Chip>
+            <h1>Acces admin requis</h1>
+            <p className="muted">Ce compte est connecte, mais il n'a pas les droits admin ou owner.</p>
             <Button
               color="primary"
               variant="flat"
@@ -44,7 +44,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 await queryClient.invalidateQueries();
               }}
             >
-              Sign out
+              Deconnexion
             </Button>
           </div>
         </section>
@@ -59,10 +59,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <div className="brand-mark">J</div>
           <div>
             <strong>Joumla</strong>
-            <span>Admin web</span>
+            <span>Administration</span>
           </div>
         </div>
-        <nav className="nav-list" aria-label="Admin modules">
+        <nav className="nav-list" aria-label="Modules admin">
           {adminModules.map((module) => {
             const isActive = module.href === "/" ? pathname === "/" : pathname.startsWith(module.href);
             return (
@@ -76,7 +76,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <div className="workspace">
         <header className="topbar">
           <div>
-            <p className="eyebrow">Protected back-office</p>
+            <p className="eyebrow">Espace protege</p>
             <h1>Joumla Store</h1>
           </div>
           <div className="topbar-account">
@@ -89,7 +89,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 await queryClient.invalidateQueries();
               }}
             >
-              Sign out
+              Deconnexion
             </Button>
           </div>
         </header>

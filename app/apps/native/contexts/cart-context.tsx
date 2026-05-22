@@ -228,7 +228,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           {selectedProduct ? (
             <>
               <View style={{ gap: 8, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
                   {getLocalizedName(language, selectedProduct)}
                 </Text>
                 <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, textAlign: isRtl ? "right" : "left" }}>
@@ -237,7 +237,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               </View>
 
               <View style={{ flexDirection: isRtl ? "row-reverse" : "row", alignItems: "center", justifyContent: "space-between" }}>
-                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "900" }}>
+                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "700" }}>
                   {labels.title}
                 </Text>
                 <View style={{ flexDirection: isRtl ? "row-reverse" : "row", alignItems: "center", gap: 12 }}>
@@ -247,7 +247,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   >
                     <Ionicons name="remove" size={20} color={joumlaColors.pink} />
                   </Pressable>
-                  <Text selectable style={{ minWidth: 34, color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 24, fontWeight: "900", textAlign: "center", fontVariant: ["tabular-nums"] }}>
+                  <Text selectable style={{ minWidth: 34, color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 24, fontWeight: "700", textAlign: "center", fontVariant: ["tabular-nums"] }}>
                     {sheetQuantity}
                   </Text>
                   <Pressable
@@ -259,7 +259,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 </View>
               </View>
 
-              <Text selectable style={{ color: joumlaColors.pink, fontSize: 20, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+              <Text selectable style={{ color: joumlaColors.pink, fontSize: 20, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
                 {formatDa(Number(getEffectiveLotPrice(selectedProduct)) * sheetQuantity)}
               </Text>
 

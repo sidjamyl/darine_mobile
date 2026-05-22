@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { router } from "expo-router";
 import { Button, Card, Chip, FieldError, Spinner } from "heroui-native";
 import { Text, View } from "react-native";
 
@@ -19,19 +20,24 @@ const copy = {
     phoneMissing: "Telephone non renseigne",
     loading: "Chargement du profil...",
     profileError: "Impossible de charger votre profil.",
+    openAdmin: "Ouvrir l'admin mobile",
   },
   ar: {
     connectedBody: "ادِر ملف العميل والعنوان وكلمة المرور.",
     phoneMissing: "رقم الهاتف غير مسجل",
     loading: "جاري تحميل الملف...",
     profileError: "تعذر تحميل الملف الشخصي.",
+    openAdmin: "فتح ادارة الهاتف",
   },
 };
+
+const CLIENT_EMAIL_DOMAIN = "@clients.joumla.local";
 
 export default function ProfileScreen() {
   const { t, language, isDark, isRtl } = useAppTheme();
   const { data: session } = authClient.useSession();
   const labels = copy[language];
+  const isAdminLikeAccount = !!session?.user?.email && !session.user.email.endsWith(CLIENT_EMAIL_DOMAIN);
   const profile = useQuery({
     ...trpc.profile.me.queryOptions(),
     enabled: !!session?.user,
@@ -52,7 +58,7 @@ export default function ProfileScreen() {
           }}
         >
           <View style={{ gap: 12, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-            <Chip size="sm" variant="secondary" color="primary">
+            <Chip size="sm" variant="secondary">
               <Chip.Label>{session?.user ? t("accountConnected") : t("accountGuest")}</Chip.Label>
             </Chip>
             <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 26, fontWeight: "700" }}>
@@ -75,6 +81,11 @@ export default function ProfileScreen() {
                 }}
               >
                 <Button.Label>{t("logout")}</Button.Label>
+              </Button>
+            ) : null}
+            {isAdminLikeAccount ? (
+              <Button onPress={() => router.push("/admin")}>
+                <Button.Label>{labels.openAdmin}</Button.Label>
               </Button>
             ) : null}
           </View>
@@ -110,7 +121,7 @@ export default function ProfileScreen() {
 
         {session?.user && profile.data ? (
           <View style={{ gap: 16 }}>
-            <ProfileEditor data={profile.data} />
+            <ProfileEditor data={{ ...profile.data, profile: profile.data.profile ?? null }} />
             <ChangePasswordCard />
           </View>
         ) : null}

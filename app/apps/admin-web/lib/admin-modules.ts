@@ -1,15 +1,15 @@
 export const adminModules = [
-  { href: "/", label: "Dashboard", description: "Operational alerts and shortcuts." },
-  { href: "/orders", label: "Orders", description: "Call, process, cancel, and prepare customer orders." },
-  { href: "/products", label: "Products", description: "Create and maintain products, pricing, lots, and visibility." },
-  { href: "/categories", label: "Categories", description: "Manage active catalogue families." },
-  { href: "/brands", label: "Brands", description: "Manage supplier and private-label brands." },
-  { href: "/banners", label: "Banners", description: "Control Home banner artwork." },
-  { href: "/stock", label: "Stock", description: "Audit lots and adjust stock with reasons." },
-  { href: "/customers", label: "Customers", description: "Create clients and update phone/profile data." },
-  { href: "/admins", label: "Admins", description: "Create and disable back-office users." },
-  { href: "/announcements", label: "Announcements", description: "Publish client announcements and push messages." },
-  { href: "/settings", label: "Settings", description: "Notification and production configuration." },
+  { href: "/", label: "Tableau de bord", description: "Alertes et raccourcis operationnels." },
+  { href: "/orders", label: "Commandes", description: "Appeler, traiter et preparer les commandes." },
+  { href: "/products", label: "Produits", description: "Creer et modifier le catalogue." },
+  { href: "/categories", label: "Categories", description: "Gerer les familles du catalogue." },
+  { href: "/brands", label: "Marques", description: "Gerer les marques." },
+  { href: "/banners", label: "Bannieres", description: "Gerer les bannieres d'accueil." },
+  { href: "/stock", label: "Stock", description: "Suivre les mouvements et ajuster les lots." },
+  { href: "/customers", label: "Clients", description: "Gerer les clients." },
+  { href: "/admins", label: "Admins", description: "Creer et bloquer les comptes back-office." },
+  { href: "/announcements", label: "Annonces", description: "Publier des annonces clients." },
+  { href: "/settings", label: "Parametres", description: "Reglages rarement modifies." },
 ] as const;
 
 export type AdminModuleHref = (typeof adminModules)[number]["href"];

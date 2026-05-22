@@ -59,7 +59,7 @@ export default function FavoritesScreen() {
               alignItems: isRtl ? "flex-end" : "flex-start",
             }}
           >
-            <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 24, fontWeight: "900" }}>
+            <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 24, fontWeight: "700" }}>
               {labels.guestTitle}
             </Text>
             <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, lineHeight: 21, textAlign: isRtl ? "right" : "left" }}>
@@ -77,7 +77,7 @@ export default function FavoritesScreen() {
   const header = (
     <View style={{ gap: 14, marginBottom: 4 }}>
       <RestartRtlBanner />
-      <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 28, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+      <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 28, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
         {labels.title}
       </Text>
       {favorites.isLoading ? (

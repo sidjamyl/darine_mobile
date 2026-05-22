@@ -10,6 +10,10 @@ import express from "express";
 const app = express();
 const corsOrigins = env.CORS_ORIGIN.split(",").map((origin) => origin.trim()).filter(Boolean);
 
+app.get("/", (_req, res) => {
+  res.status(200).send("OK");
+});
+
 app.use(
   cors({
     origin: corsOrigins,
@@ -31,10 +35,6 @@ app.use(
 
 app.use(express.json());
 
-app.get("/", (_req, res) => {
-  res.status(200).send("OK");
-});
-
-app.listen(3000, "0.0.0.0", () => {
-  console.log("Server is running on http://0.0.0.0:3000");
+app.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
 });

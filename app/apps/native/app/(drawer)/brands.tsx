@@ -37,7 +37,7 @@ export default function BrandsScreen() {
       <View style={{ gap: 18 }}>
         <RestartRtlBanner />
         <View style={{ gap: 8, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 28, fontWeight: "900" }}>
+          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 28, fontWeight: "700" }}>
             {labels.title}
           </Text>
           <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, lineHeight: 21, textAlign: isRtl ? "right" : "left" }}>
@@ -86,7 +86,7 @@ export default function BrandsScreen() {
               </View>
               <View style={{ flexDirection: isRtl ? "row-reverse" : "row", alignItems: "center", gap: 8 }}>
                 <Ionicons name="pricetag-outline" size={16} color={joumlaColors.pink} />
-                <Text selectable numberOfLines={2} style={{ flex: 1, color: isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+                <Text selectable numberOfLines={2} style={{ flex: 1, color: isDark ? "#F8FAFC" : joumlaColors.navy, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
                   {brand.name}
                 </Text>
               </View>

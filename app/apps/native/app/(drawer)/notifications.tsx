@@ -48,13 +48,13 @@ export default function NotificationsScreen() {
     <Container className="p-6">
       <View style={{ gap: 18 }}>
         <RestartRtlBanner />
-        <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 30, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+        <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 30, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
           {labels.title}
         </Text>
 
         {!session?.user ? (
           <View style={{ backgroundColor: isDark ? joumlaColors.darkCard : "#FFFFFF", borderRadius: 28, borderWidth: 1, borderColor: isDark ? "#27334A" : joumlaColors.line, padding: 20, gap: 14 }}>
-            <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+            <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
               {labels.guestTitle}
             </Text>
             <Button onPress={() => router.push("/profile")}>
@@ -106,7 +106,7 @@ export default function NotificationsScreen() {
                 <Ionicons name={notification.kind === "order_status" ? "receipt-outline" : "megaphone-outline"} size={20} color={joumlaColors.pink} />
               </View>
               <View style={{ flex: 1, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 16, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 16, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
                   {notification.title}
                 </Text>
                 <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate }}>

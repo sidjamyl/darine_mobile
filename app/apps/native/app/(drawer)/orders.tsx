@@ -47,13 +47,13 @@ export default function OrdersScreen() {
     <Container className="p-6">
       <View style={{ gap: 18 }}>
         <RestartRtlBanner />
-        <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 30, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+        <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 30, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
           {labels.title}
         </Text>
 
         {!session?.user ? (
           <View style={{ backgroundColor: isDark ? joumlaColors.darkCard : "#FFFFFF", borderRadius: 28, borderWidth: 1, borderColor: isDark ? "#27334A" : joumlaColors.line, padding: 20, gap: 14 }}>
-            <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+            <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 22, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
               {labels.guestTitle}
             </Text>
             <Button onPress={() => router.push("/profile")}>
@@ -98,26 +98,26 @@ export default function OrdersScreen() {
           >
             <View style={{ flexDirection: isRtl ? "row-reverse" : "row", justifyContent: "space-between", gap: 12 }}>
               <View style={{ flex: 1, alignItems: isRtl ? "flex-end" : "flex-start", gap: 4 }}>
-                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "900" }}>
+                <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "700" }}>
                   {order.orderNumber}
                 </Text>
                 <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate }}>
                   {formatOrderDate(order.createdAt)}
                 </Text>
               </View>
-              <Text selectable style={{ color: joumlaColors.pink, fontWeight: "900" }}>
+              <Text selectable style={{ color: joumlaColors.pink, fontWeight: "700" }}>
                 {getOrderTotal(order.totalAmountSnapshot)}
               </Text>
             </View>
             <View style={{ flexDirection: isRtl ? "row-reverse" : "row", justifyContent: "space-between", alignItems: "center" }}>
-              <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "800" }}>
+              <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, fontWeight: "700" }}>
                 {getOrderStatusLabel(language, order.status)}
               </Text>
               <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate }}>
                 {order.lines.length} {labels.lines}
               </Text>
             </View>
-            <Text selectable style={{ color: joumlaColors.pink, fontWeight: "900", textAlign: isRtl ? "right" : "left" }}>
+            <Text selectable style={{ color: joumlaColors.pink, fontWeight: "700", textAlign: isRtl ? "right" : "left" }}>
               {labels.open}
             </Text>
           </Pressable>

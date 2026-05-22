@@ -202,7 +202,7 @@ export function LocationPicker({ latitude, longitude, onChange, onAddressSelecte
     >
       <View style={{ gap: 14, alignItems: isRtl ? "flex-end" : "stretch" }}>
         <View style={{ gap: 4, alignItems: isRtl ? "flex-end" : "flex-start" }}>
-          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "800" }}>
+          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 18, fontWeight: "700" }}>
             {labels.title}
           </Text>
           <Text

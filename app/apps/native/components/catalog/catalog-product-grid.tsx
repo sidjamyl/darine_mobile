@@ -45,7 +45,7 @@ export function CatalogProductGrid({ products, header, emptyTitle, emptyBody }: 
             alignItems: isRtl ? "flex-end" : "flex-start",
           }}
         >
-          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 20, fontWeight: "800" }}>
+          <Text selectable style={{ color: isDark ? "#F8FAFC" : joumlaColors.navy, fontSize: 20, fontWeight: "700" }}>
             {emptyTitle}
           </Text>
           <Text selectable style={{ color: isDark ? "#CBD5E1" : joumlaColors.slate, lineHeight: 21, textAlign: isRtl ? "right" : "left" }}>
